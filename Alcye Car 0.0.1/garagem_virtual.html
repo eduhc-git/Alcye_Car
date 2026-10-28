@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALCYE CAR · Garagem Virtual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        racing: ['"Chakra Petch"', 'sans-serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    colors: {
+                        glass: 'rgba(15, 23, 42, 0.65)',
+                        glassBorder: 'rgba(148, 163, 184, 0.15)',
+                        neonBlue: '#38bdf8',
+                        neonAmber: '#f59e0b'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            background-color: #020617;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+        }
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid theme('colors.glassBorder');
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #dashboardView { background: radial-gradient(ellipse at 75% 0%, rgba(14,165,233,.08), transparent 45%); }
+        #dashboardView aside { background: rgba(7,13,25,.88); backdrop-filter: blur(20px); }
+        .project-card { box-shadow: 0 18px 50px rgba(0,0,0,.25); transition: transform .25s,border-color .25s,box-shadow .25s; }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(14,165,233,.12); }
+        .project-art { background: radial-gradient(ellipse at 72% 60%,rgba(14,165,233,.25),transparent 35%),linear-gradient(135deg,#0b1423,#101d31 55%,#07101c); }
+        .garage-glow { text-shadow: 0 0 30px rgba(56,189,248,.18); }
+        body::after { content:'ALCYE CAR'; position:fixed; inset:0; z-index:99999; display:grid; place-items:center; background:radial-gradient(ellipse at center,rgba(14,165,233,.14),transparent 45%),#050a12; color:#e2e8f0; font:700 1.15rem 'Chakra Petch',sans-serif; letter-spacing:.22em; opacity:0; transition:opacity .38s ease; pointer-events:none; }
+        html.page-leaving body::after, html.page-entering body::after { opacity:1; }
+        @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+        @media(max-width:767px) {
+            body { overflow:auto; min-height:100vh; height:auto; }
+            #dashboardView { position:fixed; overflow:auto; }
+            #dashboardView aside { min-height:auto; }
+            #dashboardView nav { display:flex; gap:.5rem; }
+            #dashboardView nav > * { flex:1; justify-content:center; padding:.65rem .5rem; margin-top:0; }
+        }
+    </style>
+    <script>
+        (() => {
+            const root = document.documentElement;
+            try { if (sessionStorage.getItem('tuning-page-transition') === '1') { root.classList.add('page-entering'); sessionStorage.removeItem('tuning-page-transition'); document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('page-entering'))), { once: true }); } } catch (_) {}
+            document.addEventListener('click', (event) => {
+                const link = event.target.closest('a[href]');
+                if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return;
+                const target = new URL(link.href, location.href);
+                if (target.origin !== location.origin || !/\.html$/i.test(target.pathname) || target.href === location.href) return;
+                event.preventDefault(); root.classList.add('page-leaving');
+                try { sessionStorage.setItem('tuning-page-transition', '1'); } catch (_) {}
+                setTimeout(() => location.assign(target.href), 240);
+            });
+        })();
+    </script>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col font-sans antialiased">
+
+    <!-- DASHBOARD PRINCIPAL -->
+    <div id="dashboardView" class="absolute inset-0 flex flex-col md:flex-row z-40 h-full">
+        <aside class="glass-panel w-full md:w-64 md:h-full flex flex-col border-r border-slate-700/50 shrink-0 z-20">
+            <div class="p-5 flex items-center gap-3 border-b border-slate-700/50">
+                <div class="w-14 h-14 flex items-center justify-center shrink-0">
+                    <img src="logo.PNG" alt="Logo ALCYE CAR" class="w-14 h-14 object-contain">
+                </div>
+                <div>
+                    <div class="font-racing font-bold text-sm leading-tight text-white uppercase">ALCYE CAR</div>
+                    <div class="text-[10px] text-sky-400 uppercase tracking-widest">Garagem Virtual</div>
+                </div>
+            </div>
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                <a href="index.html" class="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-sky-500/20 to-blue-600/10 border border-sky-500/30 text-sky-300 rounded-xl font-racing font-medium text-sm transition-all hover:border-sky-400/70">
+                    <i class="fa-solid fa-car-side w-5 text-center"></i> Plataforma
+                </a>
+                <!-- BOTÃO DE CONEXÃO COM O FÓRUM DE PEÇAS -->
+                <a href="forum_pecas.html" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800/50 text-slate-300 rounded-xl font-racing font-medium text-sm transition-all border border-transparent hover:border-slate-700/50">
+                    <i class="fa-solid fa-box-open w-5 text-center text-sky-400"></i> Fórum de Peças
+                </a>
+                <a href="dinamometro_servistec.html" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800/50 text-slate-300 rounded-xl font-racing font-medium text-sm transition-all border border-transparent hover:border-slate-700/50">
+                    <i class="fa-solid fa-gauge-high w-5 text-center text-emerald-400"></i> Dinamômetro
+                </a>
+            </nav>
+            <div class="p-4 border-t border-slate-700/50 text-xs text-slate-500">
+                Oficina local · sem conta
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8">
+                <div class="flex justify-between items-end mb-7 fade-in">
+                    <div>
+                        <div class="text-[11px] font-racing uppercase tracking-[.22em] text-sky-400 mb-2"><i class="fa-solid fa-circle text-[7px] mr-2 animate-pulse"></i>Seu espaço de criação</div>
+                        <h2 class="text-3xl md:text-4xl font-racing font-bold text-white tracking-wide garage-glow">GARAGEM VIRTUAL</h2>
+                        <p class="text-slate-400 text-sm mt-2">Seus projetos, suas escolhas. Prepare o próximo build.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-9 fade-in">
+                    <div class="glass-panel rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-sky-400/10 flex items-center justify-center text-sky-300"><i class="fa-solid fa-layer-group"></i></div><div><div class="text-xl font-racing font-bold text-white">01</div><div class="text-xs text-slate-400">Projeto disponível</div></div></div>
+                    <div class="glass-panel rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-300"><i class="fa-solid fa-cube"></i></div><div><div class="text-xl font-racing font-bold text-white">3D</div><div class="text-xs text-slate-400">Configuração em tempo real</div></div></div>
+                    <div class="glass-panel rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-amber-400/10 flex items-center justify-center text-amber-300"><i class="fa-solid fa-sliders"></i></div><div><div class="text-xl font-racing font-bold text-white">Livre</div><div class="text-xs text-slate-400">Monte do seu jeito</div></div></div>
+                </div>
+
+                <div class="mb-10 fade-in">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-car text-sky-400"></i>
+                        <h3 class="font-racing font-semibold text-lg text-slate-200 uppercase tracking-wider">Projetos Disponíveis</h3>
+                        <div class="h-px flex-1 bg-gradient-to-r from-slate-700 to-transparent ml-4"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                        <!-- Card principal da oficina 3D -->
+                        <a href="oficina_gol_quadrado.html" aria-label="Abrir oficina 3D do Gol Quadrado" class="project-card glass-panel rounded-2xl overflow-hidden group hover:border-sky-500/50 cursor-pointer flex flex-col h-full no-underline">
+                            <div class="project-art h-52 relative overflow-hidden flex items-end p-6">
+                                <div class="absolute inset-0 opacity-20" style="background-image:linear-gradient(rgba(56,189,248,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.15) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(transparent,#000)"></div>
+                                <div class="relative z-10"><div class="font-racing text-[10px] tracking-[.3em] text-sky-300 uppercase">Projeto 001 · 1994</div><div class="font-racing font-bold text-3xl md:text-4xl text-white mt-1">GOL <span class="text-sky-400">G1</span></div><div class="text-xs text-slate-300 mt-1">1.8 AP · Street build</div></div>
+                                <i class="fa-solid fa-car-side absolute right-5 bottom-7 text-[5.5rem] text-sky-300/20 group-hover:text-sky-300/35 group-hover:scale-110 transition-all duration-300"></i>
+                                <div class="absolute top-3 right-3 bg-emerald-500/25 border border-emerald-500/50 text-emerald-400 text-[10px] font-racing font-bold px-2.5 py-1 rounded uppercase tracking-wider backdrop-blur-sm">
+                                    Oficina 3D Pronta
+                                </div>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <h4 class="font-racing font-bold text-xl text-white mb-1">Gol Quadrado AP (Estúdio 3D)</h4>
+                                <p class="text-xs text-slate-400 mb-4 line-clamp-2">Acesse o estúdio interativo, ajuste suspensão, motor AP, turbina, rodas e pintura em tempo real.</p>
+                                <div class="mt-auto pt-3 border-t border-slate-700/50 flex justify-between items-center">
+                                    <span class="text-xs text-sky-400 font-racing font-semibold"><i class="fa-solid fa-cube mr-1"></i> Abrir Oficina 3D</span>
+                                    <i class="fa-solid fa-arrow-right text-sky-400"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="dinamometro_servistec.html" aria-label="Abrir dinamômetro virtual Servistec" class="project-card glass-panel rounded-2xl overflow-hidden group hover:border-emerald-500/50 cursor-pointer flex flex-col h-full no-underline">
+                            <div class="project-art h-52 relative overflow-hidden flex items-end p-6">
+                                <div class="absolute inset-0 opacity-20" style="background-image:linear-gradient(rgba(16,185,129,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.15) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(transparent,#000)"></div>
+                                <div class="relative z-10"><div class="font-racing text-[10px] tracking-[.3em] text-emerald-300 uppercase">Performance · Dyno 3D</div><div class="font-racing font-bold text-3xl md:text-4xl text-white mt-1">DYNO <span class="text-emerald-400">AI</span></div><div class="text-xs text-slate-300 mt-1">Simulação e análise de puxadas</div></div>
+                                <i class="fa-solid fa-gauge-high absolute right-5 bottom-7 text-[5rem] text-emerald-300/20 group-hover:text-emerald-300/35 group-hover:scale-110 transition-all duration-300"></i>
+                                <div class="absolute top-3 right-3 bg-emerald-500/25 border border-emerald-500/50 text-emerald-400 text-[10px] font-racing font-bold px-2.5 py-1 rounded uppercase tracking-wider backdrop-blur-sm">
+                                    Dinamômetro virtual
+                                </div>
+                            </div>
+                            <div class="p-5 flex-1 flex flex-col">
+                                <h4 class="font-racing font-bold text-xl text-white mb-1">Servistec · Dinamômetro 3D</h4>
+                                <p class="text-xs text-slate-400 mb-4 line-clamp-2">Simule puxadas, ajuste a preparação do motor e analise as curvas de desempenho.</p>
+                                <div class="mt-auto pt-3 border-t border-slate-700/50 flex justify-between items-center">
+                                    <span class="text-xs text-emerald-400 font-racing font-semibold"><i class="fa-solid fa-gauge-high mr-1"></i> Abrir Dinamômetro</span>
+                                    <i class="fa-solid fa-arrow-right text-emerald-400"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        const sharedConfig = location.hash;
+        if (sharedConfig.startsWith('#cfg=')) {
+            const studioLink = document.querySelector('#dashboardView a[aria-label="Abrir oficina 3D do Gol Quadrado"]');
+            if (studioLink) studioLink.href = `oficina_gol_quadrado.html${sharedConfig}`;
+            document.querySelectorAll('a[href="dinamometro_servistec.html"]').forEach((dynoLink) => {
+                dynoLink.href = `dinamometro_servistec.html${sharedConfig}`;
+            });
+        }
+    </script>
+</body>
+</html>
