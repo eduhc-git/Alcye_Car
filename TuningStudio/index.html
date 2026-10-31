@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALCYE CAR | Garagem, Adaptações GT Style & Tuning 3D</title>
+    <meta name="description" content="A primeira plataforma automotiva com oficina 3D em tempo real, Mercado de Reposição & Adaptações GT Style e dinamômetro preditivo.">
+
+    <!-- Google Fonts: Inter (UI Limpa GT Style), Rajdhani (Títulos Técnicos) e Orbitron (Display/Gauges) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuração Customizada do Tailwind fiel à interface GT STYLE -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gt: {
+                            bg: '#07090E',         /* Fundo abissal da referência */
+                            surface: '#111622',    /* Painel principal / Header do módulo */
+                            card: '#131824',       /* Card individual de peça */
+                            compare: '#171E2E',    /* Caixa interna comparativa original vs adaptada */
+                            border: '#1F293D',     /* Borda fina técnica */
+                            borderLight: '#2A364F',
+                            blue: '#1D8CF8',       /* Azul botão Equipar Peça e ícone */
+                            blueHover: '#0B76E0',
+                            cyan: '#38BDF8',       /* Azul claro GT STYLE e badges */
+                            cyanGlow: '#00F0FF',
+                            green: '#2EE59D',      /* Verde esmeralda da peça adaptada e preço */
+                            amber: '#FBBF24',      /* Amarelo Economia de R$ */
+                            textMuted: '#8B9BB4'   /* Cinza azulado para descrições */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'gt-active': '0 0 18px rgba(56, 189, 248, 0.28), inset 0 0 12px rgba(29, 140, 248, 0.25)',
+                        'gt-card': '0 14px 34px -10px rgba(0, 0, 0, 0.65)',
+                        'gt-blue': '0 4px 16px rgba(29, 140, 248, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS3 Customizado: Identidade GT STYLE + Animações Sincronizadas com o Scroll -->
+    <style>
+        :root {
+            --gt-bg: #07090E;
+            --gt-surface: #111622;
+            --gt-card: #131824;
+            --gt-compare: #171E2E;
+            --gt-border: #1F293D;
+            --gt-blue: #1D8CF8;
+            --gt-cyan: #38BDF8;
+            --gt-green: #2EE59D;
+            --gt-amber: #FBBF24;
+        }
+
+        * {
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: #1D8CF8 #07090E;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07090E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1D8CF8;
+            border-radius: 4px;
+        }
+
+        body {
+            background-color: var(--gt-bg);
+            color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Grade Técnica sutil ao fundo */
+        .gt-grid-bg {
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(29, 140, 248, 0.08) 0%, transparent 55%),
+                linear-gradient(to right, rgba(31, 41, 61, 0.22) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(31, 41, 61, 0.22) 1px, transparent 1px);
+            background-size: 100% 100%, 56px 56px, 56px 56px;
+        }
+
+        /* Painel Superior / Container Padrão GT STYLE (idêntico à imagem enviada) */
+        .gt-header-bar {
+            background: linear-gradient(180deg, #131926 0%, #0F1420 100%);
+            border: 1px solid #1F293D;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Card de Peça GT STYLE */
+        .gt-part-card {
+            background: #131824;
+            border: 1px solid #1F293D;
+            border-radius: 16px;
+            transition: transform 0.22s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+        }
+        .gt-part-card:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65), 0 0 22px rgba(29, 140, 248, 0.12);
+        }
+        .gt-part-card.equipped {
+            border-color: rgba(46, 229, 157, 0.55);
+            box-shadow: 0 0 25px rgba(46, 229, 157, 0.12);
+        }
+
+        /* Caixa Interna Comparativa (Original Riscado vs Peça Adaptada Verde) */
+        .gt-compare-box {
+            background: #171D2B;
+            border: 1px solid #232C40;
+            border-radius: 11px;
+        }
+
+        /* Links da Navbar com Borda Neon Dinâmica (Clique + ScrollSpy) */
+        .gt-nav-link {
+            background: transparent;
+            border: 1.5px solid transparent;
+            color: #8B9BB4;
+            border-radius: 9999px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gt-nav-link:hover {
+            color: #F8FAFC;
+            background: rgba(17, 22, 34, 0.6);
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+        .gt-nav-link.active {
+            background: rgba(17, 25, 40, 0.95);
+            border-color: #38BDF8;
+            color: #FFFFFF;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.32), inset 0 0 10px rgba(29, 140, 248, 0.22);
+        }
+
+        /* Badge Técnica Azul Claro no Canto Superior Direito do Card */
+        .gt-adaptation-badge {
+            background: rgba(14, 165, 233, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            color: #38BDF8;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.25;
+            padding: 5px 10px;
+        }
+
+        /* Abas e Pílulas GT Style */
+        .gt-tab-pill {
+            background: #111622;
+            border: 1.5px solid #1F293D;
+            color: #94A3B8;
+            border-radius: 9999px;
+            transition: all 0.25s ease;
+        }
+        .gt-tab-pill:hover {
+            color: #F8FAFC;
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+        .gt-tab-pill.active {
+            background: rgba(17, 25, 40, 0.95);
+            border: 1.5px solid #38BDF8;
+            color: #FFFFFF;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.32), inset 0 0 12px rgba(56, 189, 248, 0.16);
+        }
+
+        /* Pílula de Categoria (Motor & Bloco / Suspensão & Freios / Admissão & Escape) */
+        .gt-category-pill {
+            background: #151B28;
+            border: 1.5px solid #222B3E;
+            color: #CBD5E1;
+            border-radius: 10px;
+            transition: all 0.22s ease;
+        }
+        .gt-category-pill:hover {
+            background: #1B2334;
+            color: #FFFFFF;
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+        .gt-category-pill.active {
+            background: linear-gradient(180deg, #164E87 0%, #103A67 100%);
+            border: 1.5px solid #38BDF8;
+            color: #FFFFFF;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.38), inset 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Cards Interativos do Estúdio 3D e Modos do Dyno com Borda Neon Ativa */
+        .gt-selectable-card {
+            background: #131824;
+            border: 1.5px solid #1F293D;
+            border-radius: 16px;
+            transition: all 0.25s ease;
+        }
+        .gt-selectable-card:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+        }
+        .gt-selectable-card.active-neon {
+            background: linear-gradient(180deg, rgba(22, 34, 56, 0.92) 0%, rgba(17, 24, 39, 0.95) 100%);
+            border: 1.5px solid #38BDF8 !important;
+            box-shadow: 0 0 22px rgba(56, 189, 248, 0.28), inset 0 0 14px rgba(29, 140, 248, 0.16) !important;
+        }
+
+        /* Botão Azul "Equipar Peça" Exato da Imagem */
+        .btn-gt-equip {
+            background: #1D8CF8;
+            color: #FFFFFF;
+            font-weight: 700;
+            border-radius: 9px;
+            transition: all 0.2s ease;
+        }
+        .btn-gt-equip:hover {
+            background: #0B76E0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(29, 140, 248, 0.45);
+        }
+        .btn-gt-equip.equipped {
+            background: rgba(46, 229, 157, 0.16);
+            border: 1px solid #2EE59D;
+            color: #2EE59D;
+        }
+
+        /* Gatilhos de Rolagem (Scroll Triggers via IntersectionObserver) */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 0.75s ease-out, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .revealed {
+            opacity: 1 !important;
+            transform: translate(0, 0) scale(1) !important;
+        }
+
+        /* Efeito 3D Tilt Suave nos Cards */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            will-change: transform;
+        }
+
+        /* Linha do Tempo Iluminada */
+        .timeline-step.active .step-badge {
+            background: #1D8CF8;
+            color: #FFFFFF;
+            border-color: #38BDF8;
+            box-shadow: 0 0 20px rgba(29, 140, 248, 0.7);
+        }
+        .timeline-step.active .step-box {
+            border-color: rgba(56, 189, 248, 0.55);
+        }
+
+        /* Feixe de Scanner do Estúdio 3D */
+        @keyframes scanBeam {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(450%); }
+        }
+        .scanner-line {
+            animation: scanBeam 5.5s linear infinite;
+        }
+    </style>
+</head>
+<body class="gt-grid-bg selection:bg-gt-blue selection:text-white">
+
+    <!-- =========================================================================
+         CAMADAS DE FUNDO PARALLAX SINCRONIZADAS COM O SCROLL (window.scrollY)
+    ========================================================================== -->
+    <div id="parallax-bg" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        <!-- Brilhos Atmosféricos GT Style -->
+        <div class="parallax-layer absolute -top-36 left-[8%] w-[480px] h-[480px] rounded-full bg-gt-blue/10 blur-[140px]" data-speed="0.12"></div>
+        <div class="parallax-layer absolute top-[42%] -right-36 w-[440px] h-[440px] rounded-full bg-gt-cyan/10 blur-[140px]" data-speed="-0.14"></div>
+        <div class="parallax-layer absolute top-[78%] left-[15%] w-[520px] h-[520px] rounded-full bg-gt-blue/10 blur-[150px]" data-speed="0.09"></div>
+
+        <!-- Engrenagem Técnica Superior Direita (Gira com o Scroll) -->
+        <div class="parallax-layer absolute -top-24 -right-24 opacity-[0.05] text-gt-cyan" data-speed="0.2" data-rotate="0.09">
+            <svg width="440" height="440" viewBox="0 0 200 200" fill="none">
+                <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="10" stroke-dasharray="18 10"/>
+                <circle cx="100" cy="100" r="58" stroke="#1D8CF8" stroke-width="3"/>
+                <circle cx="100" cy="100" r="32" stroke="currentColor" stroke-width="4" stroke-dasharray="12 6"/>
+            </svg>
+        </div>
+
+        <!-- Engrenagem Técnica Esquerda (Gira no sentido inverso do Scroll) -->
+        <div class="parallax-layer absolute top-[48%] -left-28 opacity-[0.05] text-slate-400" data-speed="-0.16" data-rotate="-0.11">
+            <svg width="360" height="360" viewBox="0 0 200 200" fill="none">
+                <circle cx="100" cy="100" r="76" stroke="currentColor" stroke-width="8" stroke-dasharray="16 12"/>
+                <circle cx="100" cy="100" r="52" stroke="#38BDF8" stroke-width="3"/>
+                <line x1="100" y1="20" x2="100" y2="180" stroke="currentColor" stroke-width="2"/>
+                <line x1="20" y1="100" x2="180" y2="100" stroke="currentColor" stroke-width="2"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         HEADER FIXO (NAVBAR GT STYLE)
+    ========================================================================== -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#090D15]/90 backdrop-blur-md border-b border-gt-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Esquerda: Ícone GT Style + Logo Oficial Alcye Car -->
+            <a href="#hero" class="flex items-center gap-3.5 group focus:outline-none">
+                <div class="relative w-11 h-11 rounded-xl bg-gt-blue flex items-center justify-center shadow-gt-blue overflow-hidden border border-gt-cyan/40 shrink-0">
+                    <!-- Imagem da Logo (Pode ser trocada pelo botão Testar Minha Logo ou via código) -->
+                    <img 
+                        id="navbar-logo-img"
+                        src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231D8CF8'/%3E%3Cg fill='%23FFFFFF'%3E%3Cpath d='M42 28c-7.7 0-14 6.3-14 14s6.3 14 14 14 14-6.3 14-14-6.3-14-14-14zm0 20c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z'/%3E%3Ccircle cx='66' cy='62' r='10'/%3E%3C/g%3E%3C/svg%3E" 
+                        alt="Alcye Car GT Style Icon" 
+                        class="w-full h-full object-cover"
+                    >
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-tech font-bold text-xl sm:text-2xl tracking-wide text-white uppercase">
+                            ALCYE CAR
+                        </span>
+                        <span class="font-tech font-bold text-xs sm:text-sm px-2 py-0.5 rounded bg-gt-cyan/15 border border-gt-cyan/30 text-gt-cyan uppercase tracking-wider">
+                            GT STYLE
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-gt-textMuted -mt-1 hidden sm:block">
+                        Garagem 3D, Adaptações &bull; Dyno AI
+                    </p>
+                </div>
+            </a>
+
+            <!-- Centro: Navegação Suave com Borda Neon Sincronizada (Clique + ScrollSpy) -->
+            <nav id="main-navbar-links" class="hidden lg:flex items-center gap-2">
+                <a href="#hero" data-section="hero" onclick="setActiveNavLink('hero')" class="gt-nav-link active px-4 py-2 text-xs font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-gt-cyan nav-icon"></i>
+                    <span>Início</span>
+                </a>
+                <a href="#mercado-gt" data-section="mercado-gt" onclick="setActiveNavLink('mercado-gt')" class="gt-nav-link px-4 py-2 text-xs font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-screwdriver-wrench text-slate-400 nav-icon"></i>
+                    <span>Mercado GT Style</span>
+                </a>
+                <a href="#tuning-3d" data-section="tuning-3d" onclick="setActiveNavLink('tuning-3d')" class="gt-nav-link px-4 py-2 text-xs font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-cube text-slate-400 nav-icon"></i>
+                    <span>Tuning 3D</span>
+                </a>
+                <a href="#como-funciona" data-section="como-funciona" onclick="setActiveNavLink('como-funciona')" class="gt-nav-link px-4 py-2 text-xs font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-route text-slate-400 nav-icon"></i>
+                    <span>Como Funciona</span>
+                </a>
+                <a href="#dyno-ai" data-section="dyno-ai" onclick="setActiveNavLink('dyno-ai')" class="gt-nav-link px-4 py-2 text-xs font-semibold flex items-center gap-1.5">
+                    <i class="fa-solid fa-gauge-high text-slate-400 nav-icon"></i>
+                    <span>Dyno Inteligente</span>
+                </a>
+            </nav>
+
+            <!-- Direita: Status de Economia do Projeto + Botões de Acesso -->
+            <div class="hidden sm:flex items-center gap-3">
+                <!-- Pill de Economia Acumulada em Tempo Real -->
+                <a href="#mercado-gt" class="px-3.5 py-2 rounded-xl bg-gt-surface border border-gt-border flex items-center gap-2.5 hover:border-gt-amber/50 transition" title="Economia acumulada com peças adaptadas">
+                    <i class="fa-solid fa-bolt text-gt-amber text-xs"></i>
+                    <div class="text-left">
+                        <span class="block text-[10px] uppercase tracking-wider text-gt-textMuted leading-none">Economia no Projeto</span>
+                        <span id="header-savings-badge" class="font-bold text-xs text-gt-amber">R$ 250,00 (1 peça)</span>
+                    </div>
+                </a>
+
+                <button onclick="openAuthModal('login')" class="px-4 py-2.5 rounded-xl bg-gt-surface hover:bg-gt-card border border-gt-border text-xs font-semibold text-slate-200 transition">
+                    Entrar na garagem
+                </button>
+                <button onclick="openAuthModal('register')" class="btn-gt-equip px-4 py-2.5 text-xs flex items-center gap-2">
+                    <span>Acessar grátis</span>
+                    <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                </button>
+            </div>
+
+            <!-- Botão Menu Mobile -->
+            <button id="mobile-menu-btn" aria-label="Menu" class="lg:hidden p-2.5 rounded-xl bg-gt-surface border border-gt-border text-gt-cyan">
+                <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Mobile -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-gt-surface border-t border-gt-border px-6 py-5 space-y-3">
+            <a href="#mercado-gt" class="mobile-nav-link block py-2 text-sm font-semibold text-gt-cyan">🛠️ Mercado de Reposição &amp; Adaptações</a>
+            <a href="#tuning-3d" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">🧊 Garagem &amp; Tuning 3D</a>
+            <a href="#como-funciona" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">⚡ Como Funciona a Jornada</a>
+            <a href="#dyno-ai" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">📈 Alcye Dyno AI</a>
+            <div class="pt-3 border-t border-gt-border flex gap-3">
+                <button onclick="openAuthModal('login')" class="w-1/2 py-2.5 rounded-xl bg-gt-card border border-gt-border text-xs font-bold text-white">Entrar na garagem</button>
+                <button onclick="openAuthModal('register')" class="w-1/2 py-2.5 rounded-xl btn-gt-equip text-xs font-bold">Acessar grátis</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         SEÇÃO 1: HERO SECTION (ESTÉTICA GT STYLE + PARALLAX DE ENGRENAGENS)
+    ========================================================================== -->
+    <section id="hero" class="relative pt-28 pb-16 md:pt-36 md:pb-24 z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Coluna Esquerda: Título & Proposta de Valor -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal-up">
+                    <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-gt-surface border border-gt-cyan/40 shadow-gt-active">
+                        <span class="w-2 h-2 rounded-full bg-gt-green animate-ping"></span>
+                        <span class="text-xs font-semibold text-gt-cyan tracking-wide">
+                            PLATAFORMA GT STYLE &bull; INTERCÂMBIO DE PEÇAS &amp; OFICINA 3D
+                        </span>
+                    </div>
+
+                    <h1 class="font-tech font-bold text-4xl sm:text-5xl xl:text-6xl uppercase tracking-tight leading-[1.08] text-white">
+                        Projete, Adapte Peças com <span class="text-gt-cyan">Encaixe Perfeito</span> e Domine a Performance.
+                    </h1>
+
+                    <p class="text-gt-textMuted text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Descubra quais peças de outros carros servem no seu projeto por uma fração do preço original, teste no <strong class="text-white">Estúdio 3D</strong> e valide o ganho de potência no <strong class="text-gt-green">Alcye Dyno AI</strong>.
+                    </p>
+
+                    <!-- CTAs Principais -->
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#mercado-gt" class="btn-gt-equip w-full sm:w-auto px-7 py-4 text-sm sm:text-base flex items-center justify-center gap-3 shadow-gt-blue">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span>Abrir Mercado de Adaptações</span>
+                        </a>
+                        <a href="#tuning-3d" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-gt-surface hover:bg-gt-card border border-gt-border hover:border-gt-cyan/50 text-sm sm:text-base font-semibold text-slate-200 transition flex items-center justify-center gap-2.5">
+                            <i class="fa-solid fa-cube text-gt-cyan"></i>
+                            <span>Ir para a Garagem 3D</span>
+                        </a>
+                    </div>
+
+                    <!-- Mini Resumo Numérico -->
+                    <div class="pt-6 grid grid-cols-3 gap-4 border-t border-gt-border max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <div class="font-display font-bold text-xl sm:text-2xl text-white">
+                                +<span class="counter-value" data-target="18500">0</span>
+                            </div>
+                            <span class="text-xs text-gt-textMuted">Peças Mapeadas</span>
+                        </div>
+                        <div>
+                            <div class="font-display font-bold text-xl sm:text-2xl text-gt-green">
+                                Até <span class="counter-value" data-target="65">0</span>%
+                            </div>
+                            <span class="text-xs text-gt-textMuted">Economia em Swaps</span>
+                        </div>
+                        <div>
+                            <div class="font-display font-bold text-xl sm:text-2xl text-gt-amber">
+                                <span class="counter-value" data-target="98">0</span>.4%
+                            </div>
+                            <span class="text-xs text-gt-textMuted">Precisão Dyno AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Emblema Oficial Alcye Car + Preview de Economia GT Style -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center reveal-scale">
+                    <div class="relative w-full max-w-md gt-header-bar p-6 border border-gt-border relative overflow-hidden">
+                        
+                        <!-- Engrenagem decorativa que gira com o scroll -->
+                        <div id="hero-card-gear" class="absolute -right-12 -top-12 opacity-10 pointer-events-none text-gt-cyan">
+                            <svg width="180" height="180" viewBox="0 0 200 200" fill="none">
+                                <circle cx="100" cy="100" r="75" stroke="currentColor" stroke-width="12" stroke-dasharray="18 10"/>
+                                <circle cx="100" cy="100" r="48" stroke="currentColor" stroke-width="4"/>
+                            </svg>
+                        </div>
+
+                        <div class="flex items-center gap-4 pb-5 border-b border-gt-border">
+                            <!-- Moldura da Logo Oficial Alcye Car -->
+                            <div class="w-20 h-20 rounded-2xl bg-[#0B0F19] border-2 border-gt-cyan/50 p-1.5 shrink-0 shadow-gt-active relative">
+                                <img 
+                                    id="hero-logo-img"
+                                    src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cdefs%3E%3CradialGradient id='hbg' cx='50%25' cy='50%25' r='55%25'%3E%3Cstop offset='0%25' stop-color='%2318253A'/%3E%3Cstop offset='100%25' stop-color='%2308090C'/%3E%3C/radialGradient%3E%3ClinearGradient id='hmetal' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='45%25' stop-color='%23C0C7D0'/%3E%3Cstop offset='100%25' stop-color='%23566373'/%3E%3C/linearGradient%3E%3ClinearGradient id='hneon' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300F0FF'/%3E%3Cstop offset='100%25' stop-color='%23007BFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='300' height='300' rx='54' fill='url(%23hbg)'/%3E%3Ccircle cx='150' cy='158' r='102' fill='none' stroke='url(%23hmetal)' stroke-width='14' stroke-dasharray='22 12'/%3E%3Ccircle cx='150' cy='158' r='82' fill='none' stroke='url(%23hneon)' stroke-width='6'/%3E%3Cpath d='M150 262 L92 202 L82 132 L150 88 L218 132 L208 202 Z' fill='%230D1522' stroke='url(%23hneon)' stroke-width='5'/%3E%3Cpath d='M122 118 C75 108 38 80 26 38 C42 62 66 72 84 68 C68 50 64 30 68 18 C80 42 98 58 116 64 C108 42 110 26 116 18 C122 42 132 66 138 92' fill='none' stroke='url(%23hmetal)' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M178 118 C225 108 262 80 274 38 C258 62 234 72 216 68 C232 50 236 30 232 18 C220 42 202 58 184 64 C192 42 190 26 184 18 C178 42 168 66 162 92' fill='none' stroke='url(%23hmetal)' stroke-width='7' stroke-linecap='round'/%3E%3Cpolygon points='118,144 139,153 123,159' fill='%2300F0FF'/%3E%3Cpolygon points='182,144 161,153 177,159' fill='%2300F0FF'/%3E%3C/svg%3E" 
+                                    alt="Emblema Alcye Car" 
+                                    class="w-full h-full object-contain rounded-xl"
+                                >
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-gt-cyan block">DIAGNÓSTICO DE COMPATIBILIDADE</span>
+                                <h2 class="font-tech font-bold text-2xl text-white uppercase">ALCYE CAR <span class="text-gt-cyan">GT STYLE</span></h2>
+                                <label for="logo-upload-input" class="inline-flex items-center gap-1.5 mt-1 text-[11px] text-gt-textMuted hover:text-gt-cyan cursor-pointer transition">
+                                    <i class="fa-solid fa-camera"></i>
+                                    <span class="underline">Carregar arquivo da minha logo (IMG_1869.jpg)</span>
+                                    <input id="logo-upload-input" type="file" accept="image/*" class="hidden">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Preview fiel ao card da imagem enviada -->
+                        <div class="mt-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-white">Exemplo de Adaptação Validada:</span>
+                                <span class="gt-adaptation-badge">Encaixe direto</span>
+                            </div>
+                            <div class="gt-compare-box p-3.5 space-y-2 text-xs">
+                                <div class="flex items-center justify-between text-gt-textMuted">
+                                    <span>Biela Original VW AP</span>
+                                    <span class="line-through font-semibold">R$ 480,00</span>
+                                </div>
+                                <div class="flex items-center justify-between text-gt-green font-bold">
+                                    <span>💡 Biela Corsa 1.8 (Família II)</span>
+                                    <span>R$ 230,00</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-xs font-bold text-gt-amber">⚡ Economia de R$ 250,00</span>
+                                <a href="#mercado-gt" class="text-xs font-bold text-gt-cyan hover:underline">Ver todas as peças &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         SEÇÃO 2 (DESTAQUE FIEL À IMAGEM): MERCADO DE REPOSIÇÃO & ADAPTAÇÕES GT STYLE
+    ========================================================================== -->
+    <section id="mercado-gt" class="relative py-16 md:py-24 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- BARRA SUPERIOR DO MÓDULO (Idêntica à Imagem de Referência) -->
+            <div class="gt-header-bar p-5 sm:p-6 mb-7 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 reveal-up">
+                
+                <!-- Esquerda: Ícone Azul com Engrenagens + Título MERCADO DE REPOSIÇÃO & ADAPTAÇÕES GT STYLE -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-gt-blue flex items-center justify-center text-white text-xl shadow-gt-blue shrink-0">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-tech font-bold text-xl sm:text-2xl md:text-[26px] tracking-wide text-white uppercase leading-tight">
+                            MERCADO DE REPOSIÇÃO &amp; ADAPTAÇÕES <span class="text-gt-cyan">GT STYLE</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-gt-textMuted mt-0.5">
+                            ALCYE CAR &bull; Garagem e comunidade automotiva
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Direita: Seletor VEÍCULO + Botão Voltar para a garagem -->
+                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
+                    <div class="flex items-center gap-2.5">
+                        <label for="gt-vehicle-select" class="text-[11px] font-bold uppercase tracking-wider text-gt-textMuted">
+                            VEÍCULO:
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="gt-vehicle-select" 
+                                onchange="changeGtVehicle(this.value)"
+                                class="appearance-none bg-[#0B101B] hover:bg-[#111827] text-gt-cyan font-bold text-xs sm:text-sm pl-4 pr-9 py-2.5 rounded-xl border border-gt-borderLight focus:border-gt-cyan focus:outline-none cursor-pointer transition"
+                            >
+                                <option value="gol_ap">VW Gol Quadrado 1.6/1.8 (AP)</option>
+                                <option value="chevette">GM Chevette 1.6/S (OHC)</option>
+                                <option value="civic">Honda Civic 1.6 16v (EJ/EG)</option>
+                                <option value="opala">GM Opala / Caravan 4.1 6cc</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down text-gt-cyan text-xs absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <a href="#tuning-3d" class="px-4 py-2.5 rounded-xl bg-[#161C2A] hover:bg-[#1E2638] border border-gt-borderLight text-xs sm:text-sm font-semibold text-slate-200 transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                        <span>Voltar para a garagem</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- SUB-ABAS PRINCIPAIS: Catálogo & Compatibilidade | Central da Comunidade (Receitas Verificadas) -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-5 mb-6 border-b border-gt-border reveal-up">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button 
+                        id="tab-btn-catalogo" 
+                        type="button"
+                        onclick="switchMainGtTab('catalogo')" 
+                        class="gt-tab-pill active px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2.5"
+                    >
+                        <i id="tab-icon-catalogo" class="fa-solid fa-screwdriver-wrench text-gt-cyan"></i>
+                        <span>Catálogo &amp; Compatibilidade</span>
+                    </button>
+
+                    <button 
+                        id="tab-btn-comunidade" 
+                        type="button"
+                        onclick="switchMainGtTab('comunidade')" 
+                        class="gt-tab-pill px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2.5"
+                    >
+                        <i id="tab-icon-comunidade" class="fa-solid fa-shield-halved text-slate-400"></i>
+                        <span>Central da Comunidade (Receitas Verificadas)</span>
+                    </button>
+                </div>
+
+                <!-- Resumo Dinâmico da Economia Selecionada -->
+                <div class="flex items-center gap-3 bg-gt-surface px-4 py-2 rounded-xl border border-gt-border">
+                    <span class="text-xs text-gt-textMuted">Economia Total no Carrinho:</span>
+                    <span id="gt-total-savings" class="text-sm font-extrabold text-gt-amber">⚡ R$ 250,00</span>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO DA ABA 1: CATÁLOGO & COMPATIBILIDADE -->
+            <div id="gt-view-catalogo" class="space-y-7">
+                
+                <!-- Pílulas de Categoria: Motor & Bloco | Suspensão & Freios | Admissão & Escape -->
+                <div class="flex flex-wrap items-center justify-between gap-4 reveal-up">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button 
+                            type="button"
+                            onclick="switchGtCategory('motor')" 
+                            id="cat-btn-motor" 
+                            class="gt-category-pill active px-4 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2"
+                        >
+                            <i id="cat-icon-motor" class="fa-solid fa-gear text-gt-cyan"></i>
+                            <span>Motor &amp; Bloco</span>
+                        </button>
+
+                        <button 
+                            type="button"
+                            onclick="switchGtCategory('suspensao')" 
+                            id="cat-btn-suspensao" 
+                            class="gt-category-pill px-4 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2"
+                        >
+                            <i id="cat-icon-suspensao" class="fa-solid fa-arrows-down-to-line text-slate-400"></i>
+                            <span>Suspensão &amp; Freios</span>
+                        </button>
+
+                        <button 
+                            type="button"
+                            onclick="switchGtCategory('admissao')" 
+                            id="cat-btn-admissao" 
+                            class="gt-category-pill px-4 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2"
+                        >
+                            <i id="cat-icon-admissao" class="fa-solid fa-wind text-slate-400"></i>
+                            <span>Admissão &amp; Escape</span>
+                        </button>
+                    </div>
+
+                    <!-- Filtro Rápido por Texto -->
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass text-gt-textMuted text-xs absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input 
+                            id="gt-part-search" 
+                            type="text" 
+                            oninput="renderGtPartsGrid()"
+                            placeholder="Filtrar peça (ex: biela, freio, pistão)..." 
+                            class="w-full bg-gt-surface border border-gt-border focus:border-gt-cyan rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-gt-textMuted focus:outline-none"
+                        >
+                    </div>
+                </div>
+
+                <!-- GRID DE 3 CARDS FIÉIS À IMAGEM DE REFERÊNCIA -->
+                <div id="gt-parts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Renderizado dinamicamente via JavaScript mantendo exatamente os 3 cards da imagem por padrão -->
+                </div>
+            </div>
+
+            <!-- CONTEÚDO DA ABA 2: CENTRAL DA COMUNIDADE -->
+            <div id="gt-view-comunidade" class="hidden space-y-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Acesso ao fórum local da comunidade -->
+                    <div class="lg:col-span-5 gt-selectable-card active-neon p-6 sm:p-7 space-y-5 relative overflow-hidden">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gt-amber/15 border border-gt-amber/40 text-gt-amber text-[11px] font-bold uppercase tracking-wider">
+                                <i class="fa-solid fa-lock"></i> Proteção Anti-Spam Ativa
+                            </span>
+                            <span class="gt-adaptation-badge">Moderação Técnica</span>
+                        </div>
+
+                        <div class="flex items-start gap-4 pt-1">
+                            <div class="w-14 h-14 rounded-2xl bg-gt-blue/20 border border-gt-cyan flex items-center justify-center text-gt-cyan text-2xl shrink-0 shadow-gt-active">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white leading-snug">
+                                    Central da Comunidade
+                                </h3>
+                                <p class="text-xs text-gt-cyan font-semibold mt-0.5">
+                                    Compartilhe dicas no fórum local
+                                </p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs sm:text-sm text-gt-textMuted leading-relaxed">
+                            Consulte as adaptações compartilhadas e envie novas dicas pelo fórum. As publicações ficam disponíveis durante a sessão do navegador; não há contas nem sincronização com servidor.
+                        </p>
+
+                        <!-- Regras de Validação da Comunidade -->
+                        <div class="gt-compare-box p-4 space-y-2.5 text-xs">
+                            <div class="flex items-center gap-2.5 text-slate-200">
+                                <i class="fa-solid fa-circle-check text-gt-green"></i>
+                                <span>Informe autor, veículo, peça e valores de referência</span>
+                            </div>
+                            <div class="flex items-center gap-2.5 text-slate-200">
+                                <i class="fa-solid fa-circle-check text-gt-green"></i>
+                                <span>Confira medidas e furação antes de instalar qualquer peça</span>
+                            </div>
+                            <div class="flex items-center gap-2.5 text-slate-200">
+                                <i class="fa-solid fa-circle-check text-gt-green"></i>
+                                <span>As dicas do fórum não são validadas automaticamente</span>
+                            </div>
+                        </div>
+
+                        <!-- Acesso local à oficina e ao fórum -->
+                        <div class="space-y-3 pt-1">
+                            <button 
+                                type="button"
+                                onclick="window.location.href='TuningStudio/gemini-code-1792015511920.html'" 
+                                class="btn-gt-equip w-full py-3.5 text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-gt-blue"
+                            >
+                                <i class="fa-solid fa-comments"></i>
+                                <span>Abrir fórum da comunidade</span>
+                            </button>
+                            <button 
+                                type="button"
+                                onclick="openAuthModal('login')" 
+                                class="w-full py-3 rounded-xl bg-gt-compare hover:bg-[#1E273B] border border-gt-cyan/40 text-xs sm:text-sm font-bold text-gt-cyan transition flex items-center justify-center gap-2"
+                            >
+                                <i class="fa-solid fa-cube"></i>
+                                <span>Abrir oficina 3D</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exemplos de receitas da comunidade -->
+                    <div class="lg:col-span-7 space-y-4" id="community-tips-list">
+                        <div class="flex items-center justify-between px-1">
+                            <h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-gt-cyan flex items-center gap-2">
+                                <i class="fa-solid fa-certificate"></i>
+                                <span>Exemplos de Adaptação da Comunidade</span>
+                            </h4>
+                            <span class="text-xs text-gt-textMuted">Referências demonstrativas</span>
+                        </div>
+
+                        <!-- Receita Verificada 1 -->
+                        <div class="gt-part-card p-5 space-y-3 border-l-4 border-l-gt-cyan">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-bold text-gt-cyan flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check text-gt-green"></i>
+                                    <span>PROJETO CHEVETTE &bull; POR @PREPARADOR_SUL (OFICINA VERIFICADA)</span>
+                                </span>
+                                <span class="gt-adaptation-badge">Exemplo comunitário</span>
+                            </div>
+                            <h4 class="font-bold text-base text-white">Pinças Dianteiras e Bancos de Monza Tubarão no Chevette</h4>
+                            <p class="text-xs text-gt-textMuted leading-relaxed">
+                                As pinças ventiladas do Monza 2.0 entram direto na manga de eixo original do Chevette. Excelente melhoria de frenagem para projetos turbo sem furar o suporte original.
+                            </p>
+                            <div class="gt-compare-box p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                                <span class="text-gt-green font-bold">💡 Kit Pinças Monza 2.0 Usadas: R$ 280,00</span>
+                                <span class="text-gt-amber font-bold">⚡ Economia de R$ 420,00</span>
+                            </div>
+                        </div>
+
+                        <!-- Receita Verificada 2 -->
+                        <div class="gt-part-card p-5 space-y-3 border-l-4 border-l-gt-cyan">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-bold text-gt-cyan flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check text-gt-green"></i>
+                                    <span>VW GOL QUADRADO AP &bull; POR @GARAGEM_AP_TURBO (MEMBRO VERIFICADO)</span>
+                                </span>
+                                <span class="gt-adaptation-badge">Exemplo comunitário</span>
+                            </div>
+                            <h4 class="font-bold text-base text-white">Bicos Injetores de Astra Flex 2.0 na Flauta AP Mi</h4>
+                            <p class="text-xs text-gt-textMuted leading-relaxed">
+                                Ótima vazão para alimentar motores AP 1.8/2.0 rodando no etanol sem precisar de bicos importados de alto custo no estágio inicial. Encaixe e trava originais Bosch.
+                            </p>
+                            <div class="gt-compare-box p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                                <span class="text-gt-green font-bold">💡 Jogo 4 Bicos Bosch Astra Flex: R$ 310,00</span>
+                                <span class="text-gt-amber font-bold">⚡ Economia de R$ 340,00</span>
+                            </div>
+                        </div>
+
+                        <!-- Receita Verificada 3 -->
+                        <div class="gt-part-card p-5 space-y-3 border-l-4 border-l-gt-cyan">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-bold text-gt-cyan flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check text-gt-green"></i>
+                                    <span>HONDA CIVIC EJ/EG &bull; POR @VTEC_LAB_BR (ENGENHEIRO PARCEIRO)</span>
+                                </span>
+                                <span class="gt-adaptation-badge">Exemplo comunitário</span>
+                            </div>
+                            <h4 class="font-bold text-base text-white">Cilindro Mestre de Freio 1" de Honda CR-V 2000 no Civic</h4>
+                            <p class="text-xs text-gt-textMuted leading-relaxed">
+                                Resolve o curso longo do pedal após upgrade de pinças maiores. Furação do hidrovácuo compatível e resposta de frenagem digna de Type-R.
+                            </p>
+                            <div class="gt-compare-box p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                                <span class="text-gt-green font-bold">💡 Cilindro Mestre CR-V: R$ 310,00</span>
+                                <span class="text-gt-amber font-bold">⚡ Economia de R$ 670,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         SEÇÃO 3: GARAGEM & ESTÚDIO TUNING 3D EM TEMPO REAL (SINCRONIZADO)
+    ========================================================================== -->
+    <section id="tuning-3d" class="relative py-20 z-10 border-t border-gt-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <!-- Coluna Esquerda: Controles de Upgrades Externos e Performance 3D -->
+                <div class="lg:col-span-5 space-y-5 reveal-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gt-blue/15 border border-gt-cyan/30 text-gt-cyan text-xs font-bold uppercase">
+                        <i class="fa-solid fa-cube"></i> Oficina 3D Sincronizada
+                    </div>
+
+                    <h2 class="font-tech font-bold text-3xl sm:text-4xl text-white uppercase leading-tight">
+                        Garagem 3D &amp; <span class="text-gt-cyan">Orçamento em Tempo Real</span>
+                    </h2>
+
+                    <p class="text-gt-textMuted text-sm sm:text-base leading-relaxed">
+                        As peças que você equipa no <strong class="text-white">Mercado GT Style</strong> acima se somam automaticamente aos kits de estética e performance abaixo:
+                    </p>
+                    <a href="#" onclick="openGarageDashboard(); return false;" class="btn-gt-equip w-full py-3.5 text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-gt-blue">
+                        <i class="fa-solid fa-warehouse"></i>
+                        Abrir garagem virtual
+                    </a>
+                    <p class="text-xs text-gt-textMuted">No Gol, turbo, bielas, rodas e suspensão são transferidos para opções equivalentes da oficina; o orçamento é recalculado nela.</p>
+
+                    <!-- Seletores de Kits Visuais 3D com Borda Neon Ativa -->
+                    <div class="space-y-3 pt-1">
+                        
+                        <!-- Kit Turbo -->
+                        <div onclick="toggleStudioKit('turbo')" id="studio-card-turbo" class="gt-selectable-card active-neon p-4 cursor-pointer flex items-center justify-between">
+                            <div class="flex items-center gap-3.5">
+                                <div id="studio-icon-turbo" class="w-11 h-11 rounded-xl bg-gt-blue/20 border border-gt-cyan flex items-center justify-center text-gt-cyan text-lg">
+                                    <i class="fa-solid fa-fan animate-spin" style="animation-duration: 5s;"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Kit Turbo .50 + Intercooler Frontal</h4>
+                                    <p class="text-xs text-gt-green font-semibold">💡 R$ 3.490,00 (Montado c/ Peças Adaptadas) &bull; +85 CV</p>
+                                </div>
+                            </div>
+                            <span id="studio-btn-turbo" class="btn-gt-equip equipped px-3 py-1.5 text-xs">Equipada</span>
+                        </div>
+
+                        <!-- Rodas Aro 18 -->
+                        <div onclick="toggleStudioKit('wheels')" id="studio-card-wheels" class="gt-selectable-card p-4 cursor-pointer flex items-center justify-between">
+                            <div class="flex items-center gap-3.5">
+                                <div id="studio-icon-wheels" class="w-11 h-11 rounded-xl bg-gt-compare border border-gt-borderLight flex items-center justify-center text-slate-300 text-lg">
+                                    <i class="fa-solid fa-circle-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Rodas Esportivas Aro 17"/18" + Semi-Slick</h4>
+                                    <p class="text-xs text-gt-textMuted">R$ 3.800,00 &bull; Furação 4x100 Encaixe Direto</p>
+                                </div>
+                            </div>
+                            <span id="studio-btn-wheels" class="btn-gt-equip px-3 py-1.5 text-xs">Equipar Peça</span>
+                        </div>
+
+                        <!-- Suspensão a Ar / Rosqueada -->
+                        <div onclick="toggleStudioKit('suspension')" id="studio-card-suspension" class="gt-selectable-card p-4 cursor-pointer flex items-center justify-between">
+                            <div class="flex items-center gap-3.5">
+                                <div id="studio-icon-suspension" class="w-11 h-11 rounded-xl bg-gt-compare border border-gt-borderLight flex items-center justify-center text-slate-300 text-lg">
+                                    <i class="fa-solid fa-arrows-up-down"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Suspensão Preparada de Pista / Ar</h4>
+                                    <p class="text-xs text-gt-textMuted">R$ 2.190,00 &bull; Reduz Altura e Centro de Gravidade</p>
+                                </div>
+                            </div>
+                            <span id="studio-btn-suspension" class="btn-gt-equip px-3 py-1.5 text-xs">Equipar Peça</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Viewport 3D Vetorial + Resumo Financeiro GT Style -->
+                <div class="lg:col-span-7 reveal-right">
+                    <div class="gt-header-bar overflow-hidden border border-gt-borderLight">
+                        
+                        <!-- Barra Superior da Garagem -->
+                        <div class="px-6 py-4 bg-[#0B0F18] border-b border-gt-border flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-gt-green"></span>
+                                <span id="garage-vehicle-title" class="font-tech font-bold text-sm sm:text-base uppercase tracking-wider text-white">
+                                    GARAGEM 3D &bull; VW GOL QUADRADO 1.6/1.8 (AP)
+                                </span>
+                            </div>
+                            <span class="gt-adaptation-badge">Telemetria CAD Ativa</span>
+                        </div>
+
+                        <!-- Viewport 3D Interativo -->
+                        <div class="relative h-72 sm:h-80 bg-gradient-to-b from-[#0B101B] via-[#111827] to-[#07090E] flex items-center justify-center p-6 overflow-hidden">
+                            <div class="scanner-line absolute inset-x-0 h-10 bg-gradient-to-b from-transparent via-gt-cyan/10 to-transparent pointer-events-none"></div>
+
+                            <!-- Tags de Peças Equipadas -->
+                            <div id="garage-equipped-tags" class="absolute top-4 left-4 flex flex-wrap gap-2 z-20"></div>
+
+                            <!-- Carro Vetorial Interativo -->
+                            <svg id="car-3d-svg" viewBox="0 0 650 260" class="w-full max-w-[560px] h-auto">
+                                <defs>
+                                    <linearGradient id="gtBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#1E293B"/>
+                                        <stop offset="50%" stop-color="#0F172A"/>
+                                        <stop offset="100%" stop-color="#1E293B"/>
+                                    </linearGradient>
+                                    <filter id="gtGlow">
+                                        <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                                        <feMerge>
+                                            <feMergeNode in="blur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+
+                                <ellipse cx="325" cy="222" rx="240" ry="12" fill="rgba(29, 140, 248, 0.22)"/>
+
+                                <!-- Grupo do Chassi (Rebaixa quando a suspensão está ativa) -->
+                                <g id="car-chassis-group" class="transition-transform duration-500" style="transform: translateY(0px);">
+                                    <path d="M80 175 L98 122 L190 114 L255 68 L445 68 L510 114 L575 130 L585 178 L545 190 L105 190 Z" 
+                                          fill="url(#gtBodyGrad)" stroke="#38BDF8" stroke-width="2"/>
+                                    
+                                    <path d="M190 114 L510 114 M255 68 L245 188 M420 68 L430 188 M98 154 L575 154" 
+                                          stroke="rgba(56, 189, 248, 0.25)" stroke-width="1.2" stroke-dasharray="6 4"/>
+
+                                    <polygon points="262,75 432,75 492,112 202,112" fill="rgba(56, 189, 248, 0.14)" stroke="#38BDF8" stroke-width="1.5"/>
+
+                                    <!-- Farol e Lanterna -->
+                                    <polygon points="84,145 112,140 108,156 80,158" fill="#38BDF8" filter="url(#gtGlow)"/>
+                                    <polygon points="572,134 583,152 560,152 556,134" fill="#1D8CF8" filter="url(#gtGlow)"/>
+
+                                    <!-- Kit Turbo e Intercooler no Cofre -->
+                                    <g id="svg-part-turbo" class="transition-opacity duration-300" style="opacity: 1;">
+                                        <rect x="84" y="164" width="42" height="19" rx="3" fill="#07090E" stroke="#2EE59D" stroke-width="2"/>
+                                        <circle cx="164" cy="144" r="14" fill="#111622" stroke="#2EE59D" stroke-width="2.5" filter="url(#gtGlow)"/>
+                                        <circle cx="164" cy="144" r="5" fill="#2EE59D"/>
+                                        <path d="M126 172 Q145 172 156 154" stroke="#38BDF8" stroke-width="3" fill="none"/>
+                                    </g>
+
+                                    <!-- Suspensão Preparada -->
+                                    <g id="svg-part-suspension" class="transition-opacity duration-300" style="opacity: 0.2;">
+                                        <line x1="175" y1="148" x2="175" y2="185" stroke="#2EE59D" stroke-width="4" stroke-dasharray="4 3"/>
+                                        <line x1="475" y1="148" x2="475" y2="185" stroke="#2EE59D" stroke-width="4" stroke-dasharray="4 3"/>
+                                    </g>
+                                </g>
+
+                                <!-- Rodas Dianteira e Traseira -->
+                                <g transform="translate(175, 190)">
+                                    <circle cx="0" cy="0" r="34" fill="#07090E" stroke="#334155" stroke-width="7"/>
+                                    <circle id="wheel-front-rim" cx="0" cy="0" r="24" fill="#111622" stroke="#94A3B8" stroke-width="2.5"/>
+                                    <g id="wheel-front-spokes" stroke="#94A3B8" stroke-width="2.5">
+                                        <line x1="0" y1="-23" x2="0" y2="23"/><line x1="-23" y1="0" x2="23" y2="0"/>
+                                        <line x1="-16" y1="-16" x2="16" y2="16"/><line x1="16" y1="-16" x2="-16" y2="16"/>
+                                    </g>
+                                    <circle cx="0" cy="0" r="5" fill="#1D8CF8"/>
+                                </g>
+                                <g transform="translate(475, 190)">
+                                    <circle cx="0" cy="0" r="34" fill="#07090E" stroke="#334155" stroke-width="7"/>
+                                    <circle id="wheel-rear-rim" cx="0" cy="0" r="24" fill="#111622" stroke="#94A3B8" stroke-width="2.5"/>
+                                    <g id="wheel-rear-spokes" stroke="#94A3B8" stroke-width="2.5">
+                                        <line x1="0" y1="-23" x2="0" y2="23"/><line x1="-23" y1="0" x2="23" y2="0"/>
+                                        <line x1="-16" y1="-16" x2="16" y2="16"/><line x1="16" y1="-16" x2="-16" y2="16"/>
+                                    </g>
+                                    <circle cx="0" cy="0" r="5" fill="#1D8CF8"/>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- Rodapé da Garagem: Custos, Economia Total e Compatibilidade -->
+                        <div class="p-5 sm:p-6 bg-gt-surface border-t border-gt-border grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="gt-compare-box p-4">
+                                <span class="text-[11px] font-bold uppercase text-gt-textMuted block">Investimento Total</span>
+                                <div id="studio-total-cost" class="font-display font-bold text-2xl text-white mt-1">R$ 3.720,00</div>
+                                <span id="studio-equipped-count" class="text-[11px] text-gt-cyan font-semibold">2 peças equipadas</span>
+                            </div>
+                            <div class="gt-compare-box p-4 border-gt-amber/30">
+                                <span class="text-[11px] font-bold uppercase text-gt-textMuted block">Economia c/ Adaptações</span>
+                                <div id="studio-total-savings" class="font-display font-bold text-2xl text-gt-amber mt-1">⚡ R$ 250,00</div>
+                                <span class="text-[11px] text-gt-green font-semibold">Peças doadoras ativas</span>
+                            </div>
+                            <div class="gt-compare-box p-4">
+                                <span class="text-[11px] font-bold uppercase text-gt-textMuted block">Potência Estimada</span>
+                                <div id="studio-total-hp" class="font-display font-bold text-2xl text-gt-green mt-1">210 CV</div>
+                                <span class="text-[11px] text-gt-textMuted">Compatibilidade: 98%</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         SEÇÃO 4: COMO FUNCIONA (LINHA DO TEMPO SINCRONIZADA COM O SCROLL)
+    ========================================================================== -->
+    <section id="como-funciona" class="relative py-20 z-10 border-t border-gt-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal-up">
+                <span class="text-xs font-bold uppercase tracking-widest text-gt-cyan">PASSO A PASSO DA PLATAFORMA</span>
+                <h2 class="font-tech font-bold text-3xl sm:text-4xl text-white uppercase mt-1">
+                    Como Funciona o Ecossistema <span class="text-gt-cyan">Alcye Car</span>
+                </h2>
+            </div>
+
+            <div class="relative max-w-4xl mx-auto">
+                <!-- Barra vertical que preenche com o scroll -->
+                <div class="absolute left-6 md:left-1/2 top-4 bottom-4 w-1 -translate-x-1/2 bg-gt-surface rounded-full overflow-hidden">
+                    <div id="timeline-progress-bar" class="w-full bg-gradient-to-b from-gt-blue via-gt-cyan to-gt-green transition-all duration-300" style="height: 0%;"></div>
+                </div>
+
+                <div class="space-y-12 relative">
+                    <!-- Etapa 1 -->
+                    <div class="timeline-step relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="md:w-1/2 md:pr-12 pl-16 md:pl-0 md:text-right reveal-left">
+                            <div class="step-box gt-part-card p-6">
+                                <span class="gt-adaptation-badge">Etapa 01</span>
+                                <h3 class="font-bold text-lg text-white mt-3">1. Selecione seu Veículo Base</h3>
+                                <p class="text-xs sm:text-sm text-gt-textMuted mt-1.5">
+                                    Escolha seu carro (Gol AP, Chevette, Civic, Opala) e carregue automaticamente os parâmetros originais de motor, freios e suspensão.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-badge absolute left-6 md:left-1/2 -translate-x-1/2 w-11 h-11 rounded-xl bg-gt-surface border-2 border-gt-borderLight flex items-center justify-center font-display font-bold text-sm text-gt-cyan z-10 transition-all">01</div>
+                        <div class="md:w-1/2 md:pl-12 pl-16 mt-2 md:mt-0"></div>
+                    </div>
+
+                    <!-- Etapa 2 -->
+                    <div class="timeline-step relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="md:w-1/2 md:pr-12 pl-16 md:pl-0 order-2 md:order-1"></div>
+                        <div class="step-badge absolute left-6 md:left-1/2 -translate-x-1/2 w-11 h-11 rounded-xl bg-gt-surface border-2 border-gt-borderLight flex items-center justify-center font-display font-bold text-sm text-gt-cyan z-10 transition-all">02</div>
+                        <div class="md:w-1/2 md:pl-12 pl-16 order-1 md:order-2 reveal-right">
+                            <div class="step-box gt-part-card p-6">
+                                <span class="gt-adaptation-badge">Etapa 02</span>
+                                <h3 class="font-bold text-lg text-white mt-3">2. Compare e Equipe Peças Intercambiáveis</h3>
+                                <p class="text-xs sm:text-sm text-gt-textMuted mt-1.5">
+                                    No <strong>Mercado GT Style</strong>, compare o preço da peça original com a peça adaptada recomendada pela comunidade e veja exatamente o que precisa ser feito.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Etapa 3 -->
+                    <div class="timeline-step relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="md:w-1/2 md:pr-12 pl-16 md:pl-0 md:text-right reveal-left">
+                            <div class="step-box gt-part-card p-6">
+                                <span class="gt-adaptation-badge">Etapa 03</span>
+                                <h3 class="font-bold text-lg text-white mt-3">3. Simule no Dinamômetro AI</h3>
+                                <p class="text-xs sm:text-sm text-gt-textMuted mt-1.5">
+                                    Valide a curva de potência (CV) e torque (kgfm) gerada pelas peças escolhidas antes de comprar qualquer componente.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-badge absolute left-6 md:left-1/2 -translate-x-1/2 w-11 h-11 rounded-xl bg-gt-surface border-2 border-gt-borderLight flex items-center justify-center font-display font-bold text-sm text-gt-cyan z-10 transition-all">03</div>
+                        <div class="md:w-1/2 md:pl-12 pl-16 mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         SEÇÃO 5: DINAMÔMETRO INTELIGENTE (ALCYE DYNO AI COM SCROLL TRIGGER)
+    ========================================================================== -->
+    <section id="dyno-ai" class="relative py-20 z-10 border-t border-gt-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="gt-header-bar p-5 sm:p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 reveal-up">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-gt-blue flex items-center justify-center text-white text-xl shadow-gt-blue shrink-0">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-tech font-bold text-xl sm:text-2xl text-white uppercase">
+                            DINAMÔMETRO PREDITIVO <span class="text-gt-cyan">ALCYE DYNO AI</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-gt-textMuted">
+                            Curva de potência e torque calculada com base nas peças equipadas no seu projeto
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <button type="button" id="dyno-mode-street" onclick="selectDynoMapMode('street')" class="gt-category-pill px-3.5 py-2 text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-road"></i>
+                        <span>Mapa Rua (0,6 bar)</span>
+                    </button>
+                    <button type="button" id="dyno-mode-race" onclick="selectDynoMapMode('race')" class="gt-category-pill active px-3.5 py-2 text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-flag-checkered text-gt-cyan"></i>
+                        <span>Mapa Pista (0,9 bar)</span>
+                    </button>
+                    <button type="button" onclick="runDynoSimulation()" class="btn-gt-equip px-4 py-2 text-xs sm:text-sm flex items-center gap-2 shrink-0">
+                        <i class="fa-solid fa-play"></i>
+                        <span>Simular Passada</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="dyno-trigger-area" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                
+                <!-- Mostradores Laterais GT Style -->
+                <div class="lg:col-span-4 flex flex-col justify-between gap-5 reveal-left">
+                    
+                    <div class="gt-part-card p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase text-gt-textMuted">Potência de Roda (WHP)</span>
+                            <span class="gt-adaptation-badge">+122% Ganho</span>
+                        </div>
+                        <div class="gt-compare-box p-4 space-y-2">
+                            <div class="flex items-center justify-between text-xs text-gt-textMuted">
+                                <span>Motor Original Stock</span>
+                                <span class="line-through font-semibold">110 CV</span>
+                            </div>
+                            <div class="flex items-center justify-between text-gt-green font-bold text-lg">
+                                <span>💡 Projeto Preparado</span>
+                                <span class="font-display text-2xl"><span id="dyno-cv-counter">110</span> CV</span>
+                            </div>
+                        </div>
+                        <div class="w-full h-2 bg-gt-bg rounded-full overflow-hidden mt-4">
+                            <div id="dyno-cv-bar" class="h-full bg-gradient-to-r from-gt-blue to-gt-green transition-all duration-1000" style="width: 35%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="gt-part-card p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase text-gt-textMuted">Torque Máximo (KGFM)</span>
+                            <span class="gt-adaptation-badge">Full Boost 3.400 RPM</span>
+                        </div>
+                        <div class="gt-compare-box p-4 space-y-2">
+                            <div class="flex items-center justify-between text-xs text-gt-textMuted">
+                                <span>Torque Original</span>
+                                <span class="line-through font-semibold">15.8 kgfm</span>
+                            </div>
+                            <div class="flex items-center justify-between text-gt-cyan font-bold text-lg">
+                                <span>⚡ Pós-Adaptação</span>
+                                <span class="font-display text-2xl"><span id="dyno-torque-counter">15.8</span> kgfm</span>
+                            </div>
+                        </div>
+                        <div class="w-full h-2 bg-gt-bg rounded-full overflow-hidden mt-4">
+                            <div id="dyno-torque-bar" class="h-full bg-gradient-to-r from-gt-blue to-gt-cyan transition-all duration-1000" style="width: 30%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="gt-part-card p-5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase text-gt-textMuted block">Giro Atual no Rolo</span>
+                            <span class="font-display font-bold text-xl text-white"><span id="dyno-rpm-counter">1.500</span> RPM</span>
+                        </div>
+                        <span id="dyno-status-badge" class="text-xs font-bold text-gt-green">⚡ TELEMETRIA PRONTA</span>
+                    </div>
+
+                </div>
+
+                <!-- Gráfico Canvas do Dinamômetro -->
+                <div class="lg:col-span-8 reveal-right">
+                    <div class="gt-part-card p-6 h-full flex flex-col justify-between">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-white">Curva de Dinamômetro: Original vs. Preparado GT Style</h3>
+                                <p class="text-xs text-gt-textMuted">Passe o mouse sobre o gráfico para inspecionar CV e Torque em cada faixa de RPM</p>
+                            </div>
+                            <div class="flex items-center gap-4 text-xs font-semibold">
+                                <span class="flex items-center gap-1.5 text-gt-textMuted">
+                                    <span class="w-3 h-1 rounded bg-slate-500 inline-block"></span> Original (110 cv)
+                                </span>
+                                <span class="flex items-center gap-1.5 text-gt-green">
+                                    <span class="w-3 h-1.5 rounded bg-gt-green inline-block"></span> Tuned (245 cv)
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full h-72 sm:h-80 bg-[#0A0E17] rounded-xl border border-gt-border p-3">
+                            <canvas id="dynoChartCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gt-border text-xs">
+                            <div>
+                                <span class="text-gt-textMuted block">0 a 100 km/h Est.</span>
+                                <strong class="text-white">5.8 segundos</strong>
+                            </div>
+                            <div>
+                                <span class="text-gt-textMuted block">Pressão de Turbo</span>
+                                <strong class="text-gt-cyan">0,9 bar (Estágio Seguro)</strong>
+                            </div>
+                            <div>
+                                <span class="text-gt-textMuted block">Combustível</span>
+                                <strong class="text-gt-green">Etanol E100</strong>
+                            </div>
+                            <div>
+                                <span class="text-gt-textMuted block">Custo por CV Ganho</span>
+                                <strong class="text-gt-amber">⚡ R$ 31,40 / cv</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         SEÇÃO 6: CTA FINAL & RODAPÉ GT STYLE
+    ========================================================================== -->
+    <section class="relative py-20 z-10 border-t border-gt-border">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-scale">
+            <div class="gt-header-bar p-8 sm:p-14 border border-gt-cyan/40 shadow-gt-active">
+                <span class="gt-adaptation-badge uppercase tracking-wider">Acesso Gratuito para Entusiastas &amp; Preparadores</span>
+                <h2 class="font-tech font-bold text-3xl sm:text-5xl text-white uppercase mt-4">
+                    Monte seu projeto economizando até 65% com <span class="text-gt-cyan">Adaptações Inteligentes</span>
+                </h2>
+                <p class="text-gt-textMuted text-sm sm:text-base max-w-2xl mx-auto mt-3">
+                    Salve seus veículos na Garagem 3D, acesse a lista completa de peças intercambiáveis e receba o laudo do Alcye Dyno AI.
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="openAuthModal('register')" class="btn-gt-equip w-full sm:w-auto px-8 py-4 text-sm sm:text-base flex items-center justify-center gap-2.5">
+                        <span>Acessar a oficina 3D</span>
+                        <i class="fa-solid fa-bolt"></i>
+                    </button>
+                    <button onclick="openAuthModal('login')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gt-card border border-gt-borderLight text-sm font-bold text-white hover:border-gt-cyan transition">
+                        Entrar na Minha Garagem 3D
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#05070B] border-t border-gt-border py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gt-blue flex items-center justify-center text-white">
+                    <i class="fa-solid fa-gears"></i>
+                </div>
+                <div>
+                    <span class="font-tech font-bold text-lg text-white uppercase">ALCYE CAR <span class="text-gt-cyan">GT STYLE</span></span>
+                    <p class="text-xs text-gt-textMuted">&copy; 2026 Alcye Car Technologies. Todos os direitos reservados.</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-6 text-xs text-gt-textMuted font-semibold">
+                <a href="#mercado-gt" class="hover:text-gt-cyan transition">Mercado &amp; Adaptações</a>
+                <a href="#tuning-3d" class="hover:text-gt-cyan transition">Garagem 3D</a>
+                <a href="#dyno-ai" class="hover:text-gt-cyan transition">Alcye Dyno AI</a>
+                <button onclick="openAuthModal('login')" class="hover:text-gt-cyan transition">Abrir oficina 3D</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================================================================
+         MODAL DE ACESSO LOCAL GT STYLE
+    ========================================================================== -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="gt-part-card w-full max-w-md p-6 sm:p-8 border border-gt-cyan/50 relative">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 w-8 h-8 rounded-lg bg-gt-compare text-gt-textMuted hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-xl bg-gt-blue flex items-center justify-center text-white">
+                    <i class="fa-solid fa-gears"></i>
+                </div>
+                <div>
+                    <h3 id="modal-title" class="font-tech font-bold text-xl text-white uppercase">Entrar na Garagem</h3>
+                    <p id="modal-subtitle" class="text-xs text-gt-cyan">ALCYE CAR • GT STYLE</p>
+                </div>
+            </div>
+            <p class="text-sm text-gt-textMuted leading-relaxed">
+                Acesso local sem conta ou banco de dados. Você irá para a Garagem Virtual e poderá abrir a oficina 3D do Gol Quadrado.
+            </p>
+            <button type="button" onclick="openGarageDashboard()" class="btn-gt-equip w-full py-3 text-sm">
+                Entrar na garagem virtual
+            </button>
+            <div id="auth-feedback" role="status" class="hidden mt-4 p-3 rounded-xl bg-gt-amber/10 border border-gt-amber text-gt-amber text-xs font-bold text-center"></div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         JAVASCRIPT COMPLETO: CATÁLOGO GT STYLE + SCROLL SYNC + DYNO
+    ========================================================================== -->
+    <script>
+        /* ---------------------------------------------------------------------
+           1. CATÁLOGO DE PEÇAS E ADAPTAÇÕES "GT STYLE" (FIEL À IMAGEM ENVIADA)
+        --------------------------------------------------------------------- */
+        const gtPartsCatalog = {
+            gol_ap: {
+                vehicleName: 'VW Gol Quadrado 1.6/1.8 (AP)',
+                categories: {
+                    motor: [
+                        {
+                            id: 'biela_corsa',
+                            title: 'Biela Forjada /\nAdaptada',
+                            badge: 'Requer leve desbaste na\nsaia',
+                            description: 'Amplamente utilizada na preparação de motores AP aspirados e turbos de baixo custo com excelente resistência mecânica.',
+                            origName: 'Biela Original VW AP',
+                            origPrice: 480,
+                            donorName: 'Biela Corsa 1.8 (Família II)',
+                            donorPrice: 230,
+                            savings: 250,
+                            hpGain: 15,
+                            equipped: true
+                        },
+                        {
+                            id: 'bomba_oleo_gol16v',
+                            title: 'Bomba de Óleo de Alta Vazão',
+                            badge: 'Encaixe direto',
+                            description: 'Garante maior pressão de óleo em giros elevados para motores preparados com turbo.',
+                            origName: 'Original AP 1.8',
+                            origPrice: 380,
+                            donorName: 'Bomba do Gol 1.0 16v / Power',
+                            donorPrice: 160,
+                            savings: 220,
+                            hpGain: 5,
+                            equipped: false
+                        },
+                        {
+                            id: 'pistao_alcool',
+                            title: 'Jogo de Pistões de Alta Taxa',
+                            badge: 'Plug & Play',
+                            description: 'Opção econômica para taxar o motor ou rodar com kit turbo inicial.',
+                            origName: 'Pistão Standard Gasolina',
+                            origPrice: 650,
+                            donorName: 'Pistão Gol Álcool / Turbo Original',
+                            donorPrice: 390,
+                            savings: 260,
+                            hpGain: 18,
+                            equipped: false
+                        }
+                    ],
+                    suspensao: [
+                        {
+                            id: 'freio_santana',
+                            title: 'Kit Freio a Disco Ventilado 256mm',
+                            badge: 'Encaixe direto',
+                            description: 'Substitui os discos sólidos originais de 239mm sem precisar cortar a manga de eixo do Gol Quadrado.',
+                            origName: 'Kit Freio Performance Novo',
+                            origPrice: 890,
+                            donorName: 'Pinças + Discos Santana 2.0 MI',
+                            donorPrice: 390,
+                            savings: 500,
+                            hpGain: 0,
+                            equipped: false
+                        },
+                        {
+                            id: 'buchas_pu_audi',
+                            title: 'Buchas de Bandeja Reforçadas',
+                            badge: 'Plug & Play',
+                            description: 'Elimina a folga frontal em arrancadas mantendo o alinhamento sob pressão de turbo.',
+                            origName: 'Kit Buchas Especiais Pista',
+                            origPrice: 420,
+                            donorName: 'Buchas Maciças Santana / Audi 80',
+                            donorPrice: 170,
+                            savings: 250,
+                            hpGain: 0,
+                            equipped: false
+                        },
+                        {
+                            id: 'barra_estabilizadora',
+                            title: 'Barra Estabilizadora 21mm',
+                            badge: 'Encaixe direto',
+                            description: 'Reduz drasticamente a rolagem da carroceria em curvas de alta velocidade.',
+                            origName: 'Barra Anti-Roll Aftermarket',
+                            origPrice: 680,
+                            donorName: 'Barra Original Gol GTS / GTI',
+                            donorPrice: 290,
+                            savings: 390,
+                            hpGain: 0,
+                            equipped: false
+                        }
+                    ],
+                    admissao: [
+                        {
+                            id: 'tbi_golf',
+                            title: 'Corpo de Borboleta (TBI) 60mm',
+                            badge: 'Furação idêntica',
+                            description: 'Aumenta o fluxo de ar na admissão original MI sem precisar de flange adaptadora complexa.',
+                            origName: 'TBI Billet Preparada',
+                            origPrice: 750,
+                            donorName: 'TBI Golf MK3 2.0 / Verona',
+                            donorPrice: 280,
+                            savings: 470,
+                            hpGain: 9,
+                            equipped: false
+                        },
+                        {
+                            id: 'bicos_astra',
+                            title: 'Jogo 4 Bicos Injetores Alta Vazão',
+                            badge: 'Plug & Play',
+                            description: 'Alimenta motores AP convertidos para Etanol ou Turbo leve com pulverização moderna.',
+                            origName: 'Jogo Bicos Racing Novos',
+                            origPrice: 690,
+                            donorName: 'Bicos Bosch Astra Flex 2.0',
+                            donorPrice: 310,
+                            savings: 380,
+                            hpGain: 12,
+                            equipped: false
+                        },
+                        {
+                            id: 'intercooler_master',
+                            title: 'Intercooler Frontal Alumínio',
+                            badge: 'Suporte simples',
+                            description: 'Resfria o ar pressurizado da turbina com colmeia de alta eficiência.',
+                            origName: 'Intercooler Custom Sob Medida',
+                            origPrice: 1150,
+                            donorName: 'Intercooler Renault Master 2.5',
+                            donorPrice: 480,
+                            savings: 670,
+                            hpGain: 16,
+                            equipped: false
+                        }
+                    ]
+                }
+            },
+            chevette: {
+                vehicleName: 'GM Chevette 1.6/S (OHC)',
+                categories: {
+                    motor: [
+                        {
+                            id: 'cambio_omega',
+                            title: 'Câmbio 5 Marchas Reforçado',
+                            badge: 'Requer flange simples',
+                            description: 'Suporta alto torque em projetos Chevette Turbo ou Drift sem quebrar engrenagens.',
+                            origName: 'Câmbio Forjado Clark',
+                            origPrice: 2900,
+                            donorName: 'Câmbio GM Omega 2.0 / Suprema',
+                            donorPrice: 1250,
+                            savings: 1650,
+                            hpGain: 10,
+                            equipped: false
+                        },
+                        {
+                            id: 'ignicao_kadett',
+                            title: 'Distribuidor Hall & Bobina MI',
+                            badge: 'Encaixe direto',
+                            description: 'Elimina falhas de centelha em altas rotações substituindo o platinado antigo.',
+                            origName: 'Kit Ignição MSD / Racing',
+                            origPrice: 980,
+                            donorName: 'Bobina Gol MI + Módulo Bosch',
+                            donorPrice: 240,
+                            savings: 740,
+                            hpGain: 7,
+                            equipped: false
+                        },
+                        {
+                            id: 'radiador_corsa',
+                            title: 'Radiador Alumínio Brasado',
+                            badge: 'Adaptação leve suporte',
+                            description: 'Resolve em definitivo o aquecimento do Chevette preparado.',
+                            origName: 'Radiador Master Alumínio',
+                            origPrice: 890,
+                            donorName: 'Radiador Corsa Wind 1.6 c/ Eletro',
+                            donorPrice: 340,
+                            savings: 550,
+                            hpGain: 4,
+                            equipped: false
+                        }
+                    ],
+                    suspensao: [
+                        {
+                            id: 'freio_monza',
+                            title: 'Pinças Ventiladas de Monza',
+                            badge: 'Encaixe direto',
+                            description: 'Clássico absoluto da comunidade: pinças dianteiras do Monza entram direto na manga do Chevette.',
+                            origName: 'Kit Freio Wilwood / Custom',
+                            origPrice: 1200,
+                            donorName: 'Pinças + Discos Monza 2.0',
+                            donorPrice: 320,
+                            savings: 880,
+                            hpGain: 0,
+                            equipped: true
+                        },
+                        {
+                            id: 'bancos_monza',
+                            title: 'Bancos Anatômicos Envolventes',
+                            badge: '2 furos no trilho',
+                            description: 'Melhora a ergonomia e apoio lateral usando a estrutura GM compatível.',
+                            origName: 'Par Bancos Concha Novos',
+                            origPrice: 1600,
+                            donorName: 'Bancos Dianteiros Monza / Kadett GS',
+                            donorPrice: 550,
+                            savings: 1050,
+                            hpGain: 0,
+                            equipped: false
+                        },
+                        {
+                            id: 'molas_opala',
+                            title: 'Molas Traseiras Carga Progressiva',
+                            badge: 'Plug & Play',
+                            description: 'Firma a traseira para tração eficiente em arrancadas e saídas de curva.',
+                            origName: 'Molas Esportivas Importadas',
+                            origPrice: 640,
+                            donorName: 'Molas Dianteiras Cortadas / Monza',
+                            donorPrice: 220,
+                            savings: 420,
+                            hpGain: 0,
+                            equipped: false
+                        }
+                    ],
+                    admissao: [
+                        {
+                            id: 'carburador_2e',
+                            title: 'Carburação Dupla Brosol 2E',
+                            badge: 'Flange padrão',
+                            description: 'Entrega resposta imediata de acelerador e alimentação abundante no OHC.',
+                            origName: 'Weber 40 IDF Nova',
+                            origPrice: 1450,
+                            donorName: 'Carburador 2E Santana / Monza',
+                            donorPrice: 490,
+                            savings: 960,
+                            hpGain: 14,
+                            equipped: false
+                        }
+                    ]
+                }
+            },
+            civic: {
+                vehicleName: 'Honda Civic 1.6 16v (EJ/EG)',
+                categories: {
+                    motor: [
+                        {
+                            id: 'biela_vitara',
+                            title: 'Kit Pistão Baixa Taxa Turbo (Vitara)',
+                            badge: 'Famoso Vitara Setup',
+                            description: 'Receita consagrada mundialmente para motores D16Z6/D16Y8 suportarem alta pressão de turbo.',
+                            origName: 'Kit Forjado Importado CP',
+                            origPrice: 3400,
+                            donorName: 'Pistões Suzuki Vitara 1.6 + Bielas',
+                            donorPrice: 1450,
+                            savings: 1950,
+                            hpGain: 25,
+                            equipped: false
+                        }
+                    ],
+                    suspensao: [
+                        {
+                            id: 'cilindro_crv',
+                            title: 'Cilindro Mestre de Freio 1"',
+                            badge: 'Plug & Play',
+                            description: 'Aumenta a pressão hidráulica e deixa o pedal de freio firme e modulável.',
+                            origName: 'Cilindro Civic Type-R EK9',
+                            origPrice: 980,
+                            donorName: 'Cilindro Mestre Honda CR-V 2000',
+                            donorPrice: 310,
+                            savings: 670,
+                            hpGain: 0,
+                            equipped: false
+                        }
+                    ],
+                    admissao: [
+                        {
+                            id: 'tbi_b16',
+                            title: 'TBI Maior Vazão 62mm',
+                            badge: 'Encaixe direto',
+                            description: 'Melhora a respiração em altas rotações no VTEC.',
+                            origName: 'TBI Skunk2 Billet',
+                            origPrice: 1350,
+                            donorName: 'TBI Honda Accord / Prelude H22',
+                            donorPrice: 420,
+                            savings: 930,
+                            hpGain: 8,
+                            equipped: false
+                        }
+                    ]
+                }
+            },
+            opala: {
+                vehicleName: 'GM Opala / Caravan 4.1 6cc',
+                categories: {
+                    motor: [
+                        {
+                            id: 'injecao_omega',
+                            title: 'Kit Injeção Eletrônica Multiponto',
+                            badge: 'Coletor direto no cabeçote',
+                            description: 'Moderniza o 6 cilindros com partida a frio imediata, consumo reduzido e ganho de torque.',
+                            origName: 'Kit Injeção 6 Borboletas',
+                            origPrice: 4800,
+                            donorName: 'Coletor + Flauta GM Omega 4.1',
+                            donorPrice: 1850,
+                            savings: 2950,
+                            hpGain: 28,
+                            equipped: false
+                        }
+                    ],
+                    suspensao: [
+                        {
+                            id: 'freio_omega',
+                            title: 'Pinças Traseiras a Disco',
+                            badge: 'Suporte simples',
+                            description: 'Converte o tambor traseiro do Opala para freio a disco ventilado.',
+                            origName: 'Kit Conversão Importado',
+                            origPrice: 2100,
+                            donorName: 'Pinças + Discos Vectra / Omega CD',
+                            donorPrice: 780,
+                            savings: 1320,
+                            hpGain: 0,
+                            equipped: false
+                        }
+                    ],
+                    admissao: [
+                        {
+                            id: 'eletro_monza',
+                            title: 'Kit Duplo Eletroventilador',
+                            badge: 'Mais potência livre',
+                            description: 'Remove a hélice mecânica pesada do virabrequim liberando cavalos extras.',
+                            origName: 'Spal Duplo Racing',
+                            origPrice: 1390,
+                            donorName: 'Ventoinha Dupla Astra / Zafira',
+                            donorPrice: 390,
+                            savings: 1000,
+                            hpGain: 9,
+                            equipped: false
+                        }
+                    ]
+                }
+            }
+        };
+
+        let currentGtVehicle = 'gol_ap';
+        let currentGtCategory = 'motor';
+
+        // Kits do Estúdio 3D
+        const studioKits = {
+            turbo: { name: 'Kit Turbo .50', price: 3490, hp: 85, active: true },
+            wheels: { name: 'Rodas Aro 18"', price: 3800, hp: 5, active: false },
+            suspension: { name: 'Suspensão Pista/Ar', price: 2190, hp: 0, active: false }
+        };
+        const platformStorageKey = 'alcye.platform.state.v1';
+        const validGtVehicles = Object.keys(gtPartsCatalog);
+
+        function restorePlatformState() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(platformStorageKey) || 'null');
+                if (!saved || typeof saved !== 'object') return;
+                if (validGtVehicles.includes(saved.vehicle)) currentGtVehicle = saved.vehicle;
+                const equippedIds = new Set(Array.isArray(saved.equippedIds) ? saved.equippedIds : []);
+                Object.values(gtPartsCatalog).forEach(vehicle => {
+                    Object.values(vehicle.categories).forEach(parts => {
+                        parts.forEach(part => { part.equipped = equippedIds.has(part.id); });
+                    });
+                });
+                if (saved.kits && typeof saved.kits === 'object') {
+                    Object.keys(studioKits).forEach(key => {
+                        if (typeof saved.kits[key] === 'boolean') studioKits[key].active = saved.kits[key];
+                    });
+                }
+                document.getElementById('gt-vehicle-select').value = currentGtVehicle;
+            } catch (error) {
+                console.warn('Não foi possível restaurar as configurações locais da plataforma.', error);
+            }
+        }
+
+        function persistPlatformState() {
+            try {
+                const equippedIds = [];
+                Object.values(gtPartsCatalog).forEach(vehicle => {
+                    Object.values(vehicle.categories).forEach(parts => {
+                        parts.forEach(part => { if (part.equipped) equippedIds.push(part.id); });
+                    });
+                });
+                localStorage.setItem(platformStorageKey, JSON.stringify({
+                    vehicle: currentGtVehicle,
+                    equippedIds,
+                    kits: Object.fromEntries(Object.entries(studioKits).map(([key, kit]) => [key, kit.active]))
+                }));
+            } catch (error) {
+                console.warn('Não foi possível salvar as configurações locais da plataforma.', error);
+            }
+        }
+
+        // Renderiza os Cards do Mercado GT Style exatamente como na imagem enviada
+        function renderGtPartsGrid() {
+            const grid = document.getElementById('gt-parts-grid');
+            const searchQuery = (document.getElementById('gt-part-search').value || '').trim().toLowerCase();
+            const vehicleData = gtPartsCatalog[currentGtVehicle];
+            const partsList = vehicleData.categories[currentGtCategory] || [];
+
+            grid.innerHTML = '';
+
+            const filtered = partsList.filter(p => {
+                if (!searchQuery) return true;
+                return (
+                    p.title.toLowerCase().includes(searchQuery) ||
+                    p.donorName.toLowerCase().includes(searchQuery) ||
+                    p.origName.toLowerCase().includes(searchQuery) ||
+                    p.description.toLowerCase().includes(searchQuery)
+                );
+            });
+
+            filtered.forEach(part => {
+                const card = document.createElement('div');
+                card.className = `gt-part-card gt-selectable-card tilt-card p-6 flex flex-col justify-between ${part.equipped ? 'equipped active-neon' : ''}`;
+                card.innerHTML = `
+                    <div>
+                        <!-- Topo: Título à esquerda e Badge Azul Claro à direita -->
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <h3 class="font-bold text-base sm:text-[17px] text-white leading-snug whitespace-pre-line">${part.title}</h3>
+                            <span class="gt-adaptation-badge shrink-0 text-left whitespace-pre-line">${part.badge}</span>
+                        </div>
+
+                        <!-- Descrição em cinza suave -->
+                        <p class="text-xs sm:text-[13px] text-gt-textMuted leading-relaxed mb-5">
+                            ${part.description}
+                        </p>
+
+                        <!-- Caixa Interna Comparativa (#171D2B) -->
+                        <div class="gt-compare-box p-4 space-y-2.5 mb-5">
+                            <div class="flex items-center justify-between text-xs text-gt-textMuted">
+                                <span>${part.origName}</span>
+                                <span class="line-through font-semibold">R$ ${part.origPrice.toLocaleString('pt-BR')},00</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs sm:text-[13px] text-gt-green font-bold">
+                                <span class="flex items-center gap-1.5">
+                                    <span>💡</span>
+                                    <span>${part.donorName}</span>
+                                </span>
+                                <span>R$ ${part.donorPrice.toLocaleString('pt-BR')},00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rodapé do Card: Economia em Amarelo + Botão Equipar Peça em Azul -->
+                    <div class="pt-4 border-t border-gt-border flex items-center justify-between gap-2">
+                        <span class="text-xs sm:text-[13px] font-bold text-gt-amber flex items-center gap-1.5">
+                            <span>⚡</span>
+                            <span>Economia de R$ ${part.savings.toLocaleString('pt-BR')},00</span>
+                        </span>
+                        <button 
+                            type="button"
+                            onclick="toggleEquipGtPart('${part.id}')" 
+                            class="btn-gt-equip ${part.equipped ? 'equipped' : ''} px-4 py-2 text-xs"
+                        >
+                            ${part.equipped ? '✓ Equipada' : 'Equipar Peça'}
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            initTiltCards();
+            recalculateProjectTotals();
+        }
+
+        // Alterna equipar/desequipar peça do Mercado GT Style
+        function toggleEquipGtPart(partId) {
+            Object.values(gtPartsCatalog).forEach(veh => {
+                Object.values(veh.categories).forEach(catList => {
+                    catList.forEach(item => {
+                        if (item.id === partId) {
+                            item.equipped = !item.equipped;
+                        }
+                    });
+                });
+            });
+            renderGtPartsGrid();
+        }
+
+        // Troca de Categoria (Motor & Bloco / Suspensão & Freios / Admissão & Escape)
+        function switchGtCategory(catKey) {
+            currentGtCategory = catKey;
+            ['motor', 'suspensao', 'admissao'].forEach(k => {
+                const btn = document.getElementById(`cat-btn-${k}`);
+                const icon = document.getElementById(`cat-icon-${k}`);
+                if (k === catKey) {
+                    btn.classList.add('active');
+                    if (icon) {
+                        icon.classList.remove('text-slate-400');
+                        icon.classList.add('text-gt-cyan');
+                    }
+                } else {
+                    btn.classList.remove('active');
+                    if (icon) {
+                        icon.classList.remove('text-gt-cyan');
+                        icon.classList.add('text-slate-400');
+                    }
+                }
+            });
+            renderGtPartsGrid();
+        }
+
+        // Troca de Veículo no Dropdown Superior
+        function changeGtVehicle(vehKey) {
+            if (!gtPartsCatalog[vehKey]) return;
+            currentGtVehicle = vehKey;
+            const vehTitle = gtPartsCatalog[vehKey].vehicleName;
+            document.getElementById('garage-vehicle-title').textContent = `GARAGEM 3D • ${vehTitle.toUpperCase()}`;
+            renderGtPartsGrid();
+            persistPlatformState();
+        }
+
+        // Troca entre Aba Catálogo e Aba Central da Comunidade com Borda Neon Dinâmica
+        function switchMainGtTab(tab) {
+            const btnCat = document.getElementById('tab-btn-catalogo');
+            const btnCom = document.getElementById('tab-btn-comunidade');
+            const iconCat = document.getElementById('tab-icon-catalogo');
+            const iconCom = document.getElementById('tab-icon-comunidade');
+            const viewCat = document.getElementById('gt-view-catalogo');
+            const viewCom = document.getElementById('gt-view-comunidade');
+
+            if (tab === 'catalogo') {
+                btnCat.classList.add('active');
+                btnCom.classList.remove('active');
+                if (iconCat) { iconCat.classList.add('text-gt-cyan'); iconCat.classList.remove('text-slate-400'); }
+                if (iconCom) { iconCom.classList.remove('text-gt-cyan'); iconCom.classList.add('text-slate-400'); }
+                viewCat.classList.remove('hidden');
+                viewCom.classList.add('hidden');
+            } else {
+                btnCom.classList.add('active');
+                btnCat.classList.remove('active');
+                if (iconCom) { iconCom.classList.add('text-gt-cyan'); iconCom.classList.remove('text-slate-400'); }
+                if (iconCat) { iconCat.classList.remove('text-gt-cyan'); iconCat.classList.add('text-slate-400'); }
+                viewCom.classList.remove('hidden');
+                viewCat.classList.add('hidden');
+            }
+        }
+
+        // Atualiza a borda neon no Header (Navbar) ao clicar ou rolar a página
+        function setActiveNavLink(sectionId) {
+            const navLinks = document.querySelectorAll('#main-navbar-links .gt-nav-link');
+            navLinks.forEach(link => {
+                const icon = link.querySelector('.nav-icon');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.add('active');
+                    if (icon) {
+                        icon.classList.remove('text-slate-400');
+                        icon.classList.add('text-gt-cyan');
+                    }
+                } else {
+                    link.classList.remove('active');
+                    if (icon) {
+                        icon.classList.remove('text-gt-cyan');
+                        icon.classList.add('text-slate-400');
+                    }
+                }
+            });
+        }
+
+        /* ---------------------------------------------------------------------
+           2. INTEGRAÇÃO EM TEMPO REAL COM A GARAGEM 3D E ORÇAMENTO
+        --------------------------------------------------------------------- */
+        function toggleStudioKit(kitKey) {
+            if (!studioKits[kitKey]) return;
+            studioKits[kitKey].active = !studioKits[kitKey].active;
+            recalculateProjectTotals();
+        }
+
+        function recalculateProjectTotals() {
+            let totalSavings = 0;
+            let totalCost = 0;
+            let totalHp = 110; // Base 110 cv
+            let equippedCount = 0;
+            const tagsContainer = document.getElementById('garage-equipped-tags');
+            tagsContainer.innerHTML = '';
+
+            // Soma somente as peças do veículo selecionado no catálogo.
+            Object.values(gtPartsCatalog[currentGtVehicle].categories).forEach(catList => {
+                catList.forEach(part => {
+                    if (part.equipped) {
+                        totalSavings += part.savings;
+                        totalCost += part.donorPrice;
+                        totalHp += part.hpGain;
+                        equippedCount++;
+
+                        const tag = document.createElement('span');
+                        tag.className = 'gt-adaptation-badge flex items-center gap-1.5';
+                        tag.textContent = `💡 ${part.donorName}`;
+                        tagsContainer.appendChild(tag);
+                    }
+                });
+            });
+
+            // Soma Kits do Estúdio 3D
+            Object.keys(studioKits).forEach(key => {
+                const kit = studioKits[key];
+                const card = document.getElementById(`studio-card-${key}`);
+                const btn = document.getElementById(`studio-btn-${key}`);
+                const iconBox = document.getElementById(`studio-icon-${key}`);
+
+                if (kit.active) {
+                    totalCost += kit.price;
+                    totalHp += kit.hp;
+                    equippedCount++;
+                    card.classList.add('active-neon');
+                    btn.classList.add('equipped');
+                    btn.textContent = 'Equipada';
+                    if (iconBox) {
+                        iconBox.className = 'w-11 h-11 rounded-xl bg-gt-blue/20 border border-gt-cyan flex items-center justify-center text-gt-cyan text-lg';
+                    }
+
+                    const tag = document.createElement('span');
+                    tag.className = 'gt-adaptation-badge flex items-center gap-1.5';
+                    tag.innerHTML = `⚙️ ${kit.name}`;
+                    tagsContainer.appendChild(tag);
+                } else {
+                    card.classList.remove('active-neon');
+                    btn.classList.remove('equipped');
+                    btn.textContent = 'Equipar Peça';
+                    if (iconBox) {
+                        iconBox.className = 'w-11 h-11 rounded-xl bg-gt-compare border border-gt-borderLight flex items-center justify-center text-slate-300 text-lg';
+                    }
+                }
+            });
+
+            // Atualiza SVG 3D do Carro
+            document.getElementById('svg-part-turbo').style.opacity = studioKits.turbo.active ? '1' : '0.15';
+            document.getElementById('svg-part-suspension').style.opacity = studioKits.suspension.active ? '1' : '0.15';
+            document.getElementById('car-chassis-group').style.transform = studioKits.suspension.active ? 'translateY(10px)' : 'translateY(0px)';
+
+            const rimColor = studioKits.wheels.active ? '#38BDF8' : '#94A3B8';
+            ['wheel-front-rim', 'wheel-rear-rim', 'wheel-front-spokes', 'wheel-rear-spokes'].forEach(id => {
+                document.getElementById(id).setAttribute('stroke', rimColor);
+            });
+
+            // Atualiza Badges de Economia e Custos no Header, Mercado e Garagem
+            document.getElementById('gt-total-savings').textContent = `⚡ R$ ${totalSavings.toLocaleString('pt-BR')},00`;
+            document.getElementById('header-savings-badge').textContent = `R$ ${totalSavings.toLocaleString('pt-BR')},00 (${equippedCount} itens)`;
+            document.getElementById('studio-total-cost').textContent = `R$ ${totalCost.toLocaleString('pt-BR')},00`;
+            document.getElementById('studio-total-savings').textContent = `⚡ R$ ${totalSavings.toLocaleString('pt-BR')},00`;
+            document.getElementById('studio-equipped-count').textContent = `${equippedCount} peças/kits equipados`;
+            document.getElementById('studio-total-hp').textContent = `${totalHp} CV`;
+            persistPlatformState();
+        }
+
+        /* ---------------------------------------------------------------------
+           3. ANIMAÇÕES SINCRONIZADAS COM O SCROLL (PARALLAX + OBSERVER)
+        --------------------------------------------------------------------- */
+        const parallaxLayers = document.querySelectorAll('.parallax-layer');
+        const heroCardGear = document.getElementById('hero-card-gear');
+        const timelineProgressBar = document.getElementById('timeline-progress-bar');
+        const comoFuncionaSection = document.getElementById('como-funciona');
+
+        function syncScrollAnimations() {
+            const scrollY = window.scrollY;
+
+            parallaxLayers.forEach(layer => {
+                const speed = parseFloat(layer.getAttribute('data-speed') || 0);
+                const rotate = parseFloat(layer.getAttribute('data-rotate') || 0);
+                layer.style.transform = `translate3d(0, ${scrollY * speed}px, 0) rotate(${scrollY * rotate}deg)`;
+            });
+
+            if (heroCardGear) {
+                heroCardGear.style.transform = `rotate(${scrollY * 0.14}deg)`;
+            }
+
+            if (comoFuncionaSection && timelineProgressBar) {
+                const rect = comoFuncionaSection.getBoundingClientRect();
+                const winH = window.innerHeight;
+                const progress = Math.min(100, Math.max(0, ((winH * 0.65 - rect.top) / (rect.height * 0.82)) * 100));
+                timelineProgressBar.style.height = `${progress}%`;
+            }
+
+            // ScrollSpy para mover a borda neon no cabeçalho conforme a seção visível
+            const trackedSections = ['hero', 'mercado-gt', 'tuning-3d', 'como-funciona', 'dyno-ai'];
+            let currentActiveSection = 'hero';
+            trackedSections.forEach(secId => {
+                const el = document.getElementById(secId);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= 220 && rect.bottom >= 220) {
+                        currentActiveSection = secId;
+                    }
+                }
+            });
+            setActiveNavLink(currentActiveSection);
+        }
+
+        window.addEventListener('scroll', () => {
+            window.requestAnimationFrame(syncScrollAnimations);
+        }, { passive: true });
+
+        // IntersectionObserver para Reveal e Contadores
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    if (entry.target.classList.contains('timeline-step')) {
+                        entry.target.classList.add('active');
+                        const stepBox = entry.target.querySelector('.step-box');
+                        if (stepBox) stepBox.classList.add('active-neon');
+                    }
+                    entry.target.querySelectorAll('.counter-value').forEach(counter => {
+                        if (!counter.dataset.done) {
+                            counter.dataset.done = 'true';
+                            animateCounter(counter, parseInt(counter.dataset.target, 10), 1600);
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.16 });
+
+        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale, .timeline-step').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        function animateCounter(el, target, duration) {
+            const start = performance.now();
+            function tick(now) {
+                const p = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.floor(ease * target).toLocaleString('pt-BR');
+                if (p < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        function initTiltCards() {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.onmousemove = (e) => {
+                    const r = card.getBoundingClientRect();
+                    const x = e.clientX - r.left - r.width / 2;
+                    const y = e.clientY - r.top - r.height / 2;
+                    card.style.transform = `perspective(1000px) rotateX(${(-y / r.height) * 5}deg) rotateY(${(x / r.width) * 5}deg) translateY(-3px)`;
+                };
+                card.onmouseleave = () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                };
+            });
+        }
+
+        /* ---------------------------------------------------------------------
+           4. DINAMÔMETRO ALCYE DYNO AI (CANVAS ANIMADO)
+        --------------------------------------------------------------------- */
+        const dynoCanvas = document.getElementById('dynoChartCanvas');
+        const ctx = dynoCanvas.getContext('2d');
+        const rpmPoints = [1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000];
+        const stockHP   = [32,   45,   58,   71,   83,   94,   102,  107,  110,  108,  101,  92];
+        let tunedHP     = [38,   56,   84,   128,  168,  198,  218,  233,  242,  245,  239,  228];
+        let tunedTq     = [16.5, 19.2, 24.5, 31.8, 34.2, 33.8, 32.5, 31.0, 29.4, 27.8, 25.5, 23.1];
+        let dynoTargetPeakHp = 245;
+        let dynoTargetPeakTq = 34.2;
+        let dynoProgress = 0;
+        let hoverIndex = -1;
+        let dynoHasRun = false;
+
+        // Alterna entre Mapa Rua e Mapa Pista no Dyno com Borda Neon Ativa
+        function selectDynoMapMode(mode) {
+            const btnStreet = document.getElementById('dyno-mode-street');
+            const btnRace = document.getElementById('dyno-mode-race');
+            if (mode === 'street') {
+                btnStreet.classList.add('active');
+                btnRace.classList.remove('active');
+                tunedHP = [36, 52, 76, 110, 142, 168, 184, 196, 204, 208, 202, 192];
+                tunedTq = [15.8, 18.0, 22.1, 27.4, 29.5, 28.9, 27.8, 26.5, 25.1, 23.8, 22.0, 20.4];
+                dynoTargetPeakHp = 208;
+                dynoTargetPeakTq = 29.5;
+            } else {
+                btnRace.classList.add('active');
+                btnStreet.classList.remove('active');
+                tunedHP = [38, 56, 84, 128, 168, 198, 218, 233, 242, 245, 239, 228];
+                tunedTq = [16.5, 19.2, 24.5, 31.8, 34.2, 33.8, 32.5, 31.0, 29.4, 27.8, 25.5, 23.1];
+                dynoTargetPeakHp = 245;
+                dynoTargetPeakTq = 34.2;
+            }
+            runDynoSimulation();
+        }
+
+        function resizeDynoCanvas() {
+            const rect = dynoCanvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            dynoCanvas.width = (rect.width - 24) * dpr;
+            dynoCanvas.height = (rect.height - 24) * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            drawDynoChart(dynoProgress);
+        }
+
+        function drawDynoChart(progress = 1) {
+            const width = dynoCanvas.width / (window.devicePixelRatio || 1);
+            const height = dynoCanvas.height / (window.devicePixelRatio || 1);
+            ctx.clearRect(0, 0, width, height);
+
+            const padL = 42, padR = 20, padT = 22, padB = 30;
+            const cW = width - padL - padR;
+            const cH = height - padT - padB;
+
+            ctx.strokeStyle = 'rgba(139, 155, 180, 0.12)';
+            ctx.fillStyle = '#8B9BB4';
+            ctx.font = '600 11px Inter, sans-serif';
+
+            [0, 50, 100, 150, 200, 250].forEach(val => {
+                const y = padT + cH - (val / 260) * cH;
+                ctx.beginPath();
+                ctx.moveTo(padL, y);
+                ctx.lineTo(padL + cW, y);
+                ctx.stroke();
+                ctx.fillText(`${val}`, 8, y + 4);
+            });
+
+            rpmPoints.forEach((rpm, i) => {
+                const x = padL + (i / (rpmPoints.length - 1)) * cW;
+                if (i % 2 === 0 || i === rpmPoints.length - 1) {
+                    ctx.fillText(`${rpm}`, x - 14, height - 8);
+                }
+            });
+
+            const maxPts = Math.max(2, Math.floor(progress * rpmPoints.length));
+
+            // Curva Original
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([5, 4]);
+            ctx.strokeStyle = '#64748B';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < maxPts; i++) {
+                const x = padL + (i / (rpmPoints.length - 1)) * cW;
+                const y = padT + cH - (stockHP[i] / 260) * cH;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.restore();
+
+            // Curva Tuned GT Style (#2EE59D Verde Esmeralda)
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = '#2EE59D';
+            ctx.lineWidth = 3.2;
+            for (let i = 0; i < maxPts; i++) {
+                const x = padL + (i / (rpmPoints.length - 1)) * cW;
+                const y = padT + cH - (tunedHP[i] / 260) * cH;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.restore();
+
+            for (let i = 0; i < maxPts; i++) {
+                const x = padL + (i / (rpmPoints.length - 1)) * cW;
+                const y = padT + cH - (tunedHP[i] / 260) * cH;
+                ctx.beginPath();
+                ctx.arc(x, y, i === 9 ? 5.5 : 3, 0, Math.PI * 2);
+                ctx.fillStyle = i === 9 ? '#FFFFFF' : '#2EE59D';
+                ctx.fill();
+            }
+
+            if (hoverIndex >= 0 && hoverIndex < maxPts) {
+                const hx = padL + (hoverIndex / (rpmPoints.length - 1)) * cW;
+                const hy = padT + cH - (tunedHP[hoverIndex] / 260) * cH;
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+                ctx.beginPath();
+                ctx.moveTo(hx, padT);
+                ctx.lineTo(hx, padT + cH);
+                ctx.stroke();
+
+                const bW = 155, bH = 54;
+                const bX = Math.min(width - bW - 8, Math.max(padL + 6, hx - bW / 2));
+                const bY = Math.max(padT + 6, hy - 64);
+                ctx.fillStyle = '#111622';
+                ctx.strokeStyle = '#38BDF8';
+                ctx.beginPath();
+                ctx.roundRect(bX, bY, bW, bH, 8);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.fillText(`${rpmPoints[hoverIndex]} RPM`, bX + 10, bY + 18);
+                ctx.fillStyle = '#2EE59D';
+                ctx.fillText(`💡 Tuned: ${tunedHP[hoverIndex]} cv | ${tunedTq[hoverIndex]} kgfm`, bX + 10, bY + 36);
+            }
+        }
+
+        dynoCanvas.addEventListener('mousemove', (e) => {
+            const r = dynoCanvas.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (e.clientX - r.left - 42) / (r.width - 62)));
+            hoverIndex = Math.round(ratio * (rpmPoints.length - 1));
+            drawDynoChart(dynoProgress);
+        });
+        dynoCanvas.addEventListener('mouseleave', () => {
+            hoverIndex = -1;
+            drawDynoChart(dynoProgress);
+        });
+
+        function runDynoSimulation() {
+            const cvEl = document.getElementById('dyno-cv-counter');
+            const tqEl = document.getElementById('dyno-torque-counter');
+            const rpmEl = document.getElementById('dyno-rpm-counter');
+            const cvBar = document.getElementById('dyno-cv-bar');
+            const tqBar = document.getElementById('dyno-torque-bar');
+            const start = performance.now();
+            const duration = 1800;
+
+            function step(now) {
+                const p = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                dynoProgress = ease;
+                drawDynoChart(dynoProgress);
+
+                cvEl.textContent = Math.round(110 + (dynoTargetPeakHp - 110) * ease);
+                tqEl.textContent = (15.8 + (dynoTargetPeakTq - 15.8) * ease).toFixed(1);
+                rpmEl.textContent = Math.round(1500 + 5000 * ease).toLocaleString('pt-BR');
+                cvBar.style.width = `${35 + ease * 62}%`;
+                tqBar.style.width = `${30 + ease * 64}%`;
+
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        const dynoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !dynoHasRun) {
+                    dynoHasRun = true;
+                    runDynoSimulation();
+                }
+            });
+        }, { threshold: 0.25 });
+        dynoObserver.observe(document.getElementById('dyno-trigger-area'));
+
+        /* ---------------------------------------------------------------------
+           5. MENU MOBILE, UPLOAD DE LOGO E MODAL DE AUTENTICAÇÃO
+        --------------------------------------------------------------------- */
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        document.getElementById('logo-upload-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('navbar-logo-img').src = ev.target.result;
+                document.getElementById('hero-logo-img').src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function openAuthModal(mode) {
+            const modal = document.getElementById('auth-modal');
+            const feedback = document.getElementById('auth-feedback');
+            feedback.classList.add('hidden');
+            feedback.textContent = '';
+            document.getElementById('modal-title').textContent = mode === 'register' ? 'Acesso local à garagem' : 'Entrar na garagem';
+            document.getElementById('modal-subtitle').textContent = 'ALCYE CAR • acesso sem conta';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openGarageDashboard() {
+            const isGolConfig = currentGtVehicle === 'gol_ap';
+            const selectedPartIds = new Set(
+                (isGolConfig
+                    ? Object.values(gtPartsCatalog.gol_ap.categories).flat()
+                    : [])
+                    .filter(part => part.equipped)
+                    .map(part => part.id)
+            );
+            const config = {
+                v: 1,
+                sel: {
+                    fuel: 'carb_brosol2e',
+                    wheels: isGolConfig && studioKits.wheels.active ? 'rim_orbital17' : 'rim_steel13',
+                    suspension: isGolConfig && studioKits.suspension.active ? 'susp_macaulay' : 'susp_standard',
+                    exhaust: 'exh_original'
+                },
+                on: {
+                    turbo_masterpower: isGolConfig && studioKits.turbo.active,
+                    samcams_276: false,
+                    forged_internals: selectedPartIds.has('biela_corsa'),
+                    strut_bar: false,
+                    vis_cibie: false,
+                    vis_frisos: true,
+                    vis_aerofolio: false
+                },
+                colors: { chassis: '#9f1d20', bonnet: '#9f1d20', bumpers: '#16171a', wheels: '#c9ccd1' },
+                labor: 20,
+                model: {
+                    type: 'procedural',
+                    vehicle: currentGtVehicle,
+                    name: gtPartsCatalog[currentGtVehicle].vehicleName
+                }
+            };
+            const dashboardUrl = new URL('TuningStudio/tuning_dashboard.html', window.location.href);
+            dashboardUrl.hash = `cfg=${btoa(unescape(encodeURIComponent(JSON.stringify(config))))}`;
+            window.location.assign(dashboardUrl.href);
+        }
+
+        window.addEventListener('load', () => {
+            restorePlatformState();
+            renderGtPartsGrid();
+            document.getElementById('garage-vehicle-title').textContent = `GARAGEM 3D • ${gtPartsCatalog[currentGtVehicle].vehicleName.toUpperCase()}`;
+            resizeDynoCanvas();
+            syncScrollAnimations();
+        });
+        window.addEventListener('resize', resizeDynoCanvas);
+    </script>
+</body>
+</html>
