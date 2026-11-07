@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALCYE CAR | Garagem, Peças & Tuning 3D</title>
     <meta name="description" content="A primeira plataforma automotiva com oficina 3D em tempo real, Mercado de Reposição & Adaptações e dinamômetro preditivo.">
-    <link rel="stylesheet" href="assets/css/global.css">
 
     <!-- Google Fonts: Inter (UI Limpa GT Style), Rajdhani (Títulos Técnicos) e Orbitron (Display/Gauges) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +16,6 @@
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="assets/js/main.js"></script>
 
     <!-- Configuração Customizada do Tailwind fiel à interface GT STYLE -->
     <script>
@@ -412,10 +410,10 @@
             <a href="#tuning-3d" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">🧊 Garagem &amp; Tuning 3D</a>
             <a href="#como-funciona" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">⚡ Como Funciona a Jornada</a>
             <a href="#dyno-ai" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Dinamômetro</a>
-            <a href="pages/forum-pecas.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Fórum de Peças</a>
-            <a href="pages/dinamometro.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Dinamômetro completo</a>
-            <a href="pages/oficina-gol.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Oficina Gol Quadrado</a>
-            <a href="pages/garagem-virtual.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Garagem Virtual</a>
+            <a href="forum_pecas.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Fórum de Peças</a>
+            <a href="dinamometro_servistec.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Dinamômetro completo</a>
+            <a href="oficina_gol_quadrado.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Oficina Gol Quadrado</a>
+            <a href="garagem_virtual.html" class="mobile-nav-link block py-2 text-sm font-semibold text-slate-200">Garagem Virtual</a>
             <div class="pt-3 border-t border-gt-border flex gap-3">
                 <button onclick="openAuthModal('login')" class="w-1/2 py-2.5 rounded-xl bg-gt-card border border-gt-border text-xs font-bold text-white">Entrar na garagem</button>
                 <button onclick="openAuthModal('register')" class="w-1/2 py-2.5 rounded-xl btn-gt-equip text-xs font-bold">Acessar grátis</button>
@@ -440,7 +438,7 @@
         ></video>
         <div id="hero-trailer-missing" class="hidden absolute inset-0 items-center justify-center text-center px-6 pointer-events-none">
             <p class="text-sm sm:text-base text-slate-300 max-w-md bg-black/50 border border-white/10 rounded-xl px-4 py-3 backdrop-blur-sm">
-                Coloque <strong class="text-white">assets/video/trailer.mp4</strong> na pasta de vídeos do app e recarregue.
+                Coloque <strong class="text-white">trailer.mp4</strong> na pasta raiz do app (mesma pasta deste <strong class="text-white">index.html</strong>) e recarregue.
             </p>
         </div>
         <!-- Scrim pra leitura do texto -->
@@ -458,11 +456,11 @@
                 Customize o Gol Quadrado, valide o ganho de potência e leve o mesmo carro pro dyno.
             </p>
             <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <a href="pages/garagem-virtual.html" class="btn-gt-equip px-7 py-4 text-sm sm:text-base inline-flex items-center justify-center gap-3 shadow-gt-blue">
+                <a href="garagem_virtual.html" class="btn-gt-equip px-7 py-4 text-sm sm:text-base inline-flex items-center justify-center gap-3 shadow-gt-blue">
                     <i class="fa-solid fa-warehouse"></i>
                     <span>Entrar na Garagem</span>
                 </a>
-                <a href="pages/oficina-gol.html" class="px-7 py-4 rounded-xl bg-black/40 hover:bg-black/55 border border-white/20 hover:border-gt-cyan/50 text-sm sm:text-base font-semibold text-white transition inline-flex items-center justify-center gap-2.5 backdrop-blur-sm">
+                <a href="oficina_gol_quadrado.html" class="px-7 py-4 rounded-xl bg-black/40 hover:bg-black/55 border border-white/20 hover:border-gt-cyan/50 text-sm sm:text-base font-semibold text-white transition inline-flex items-center justify-center gap-2.5 backdrop-blur-sm">
                     <i class="fa-solid fa-screwdriver-wrench text-gt-cyan"></i>
                     <span>Abrir Oficina 3D</span>
                 </a>
@@ -660,7 +658,7 @@
                         <div class="space-y-3 pt-1">
                             <button 
                                 type="button"
-                                onclick="window.location.href='pages/forum-pecas.html'" 
+                                onclick="window.location.href='forum_pecas.html'" 
                                 class="btn-gt-equip w-full py-3.5 text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-gt-blue"
                             >
                                 <i class="fa-solid fa-comments"></i>
@@ -1111,7 +1109,7 @@
                                 <h3 class="font-bold text-base sm:text-lg text-white">Curva de Dinamômetro: Original vs. Preparado</h3>
                                 <p class="text-xs text-gt-textMuted">Passe o mouse sobre o gráfico para inspecionar CV e Torque em cada faixa de RPM</p>
                             </div>
-                            <a href="pages/dinamometro.html" class="px-3 py-2 rounded-lg bg-gt-surface border border-gt-border text-xs font-semibold text-gt-cyan hover:border-gt-cyan transition">
+                            <a href="dinamometro_servistec.html" class="px-3 py-2 rounded-lg bg-gt-surface border border-gt-border text-xs font-semibold text-gt-cyan hover:border-gt-cyan transition">
                                 Abrir dinamômetro completo
                             </a>
                             <div class="flex items-center gap-4 text-xs font-semibold">
@@ -1194,9 +1192,9 @@
                 <a href="#mercado-gt" class="hover:text-gt-cyan transition">Mercado &amp; Adaptações</a>
                 <a href="#tuning-3d" class="hover:text-gt-cyan transition">Garagem 3D</a>
                 <a href="#dyno-ai" class="hover:text-gt-cyan transition">Dinamômetro</a>
-                <a href="pages/forum-pecas.html" class="hover:text-gt-cyan transition">Fórum de Peças</a>
-                <a href="pages/dinamometro.html" class="hover:text-gt-cyan transition">Dinamômetro</a>
-                <a href="pages/garagem-virtual.html" class="hover:text-gt-cyan transition">Garagem Virtual</a>
+                <a href="forum_pecas.html" class="hover:text-gt-cyan transition">Fórum de Peças</a>
+                <a href="dinamometro_servistec.html" class="hover:text-gt-cyan transition">Dinamômetro</a>
+                <a href="garagem_virtual.html" class="hover:text-gt-cyan transition">Garagem Virtual</a>
                 <button onclick="openAuthModal('login')" class="hover:text-gt-cyan transition">Abrir oficina 3D</button>
             </div>
         </div>
@@ -2172,7 +2170,7 @@
             // Logo na raiz do app
             const logo = document.getElementById('navbar-logo-img');
             if (logo) {
-                const candidates = ['assets/images/logo.png'];
+                const candidates = ['logo.PNG', 'logo.png', 'logo.jpg', 'logo.jpeg', 'logo.webp'];
                 let i = 0;
                 const next = () => {
                     if (i >= candidates.length) return;
@@ -2182,7 +2180,7 @@
                 next();
             }
 
-            // Trailer armazenado junto aos demais recursos de vídeo
+            // Trailer na raiz do app (ao lado do index.html)
             const v = document.getElementById('hero-trailer');
             const miss = document.getElementById('hero-trailer-missing');
             if (!v) return;
@@ -2191,10 +2189,10 @@
             const hideMissing = () => { if (miss) { miss.classList.add('hidden'); miss.classList.remove('flex'); } };
 
             const videoNames = [
-                'assets/video/trailer.mp4',
-                'assets/video/alcye-car-trailer.mp4',
-                'assets/video/alcye_car_trailer.mp4',
-                'assets/video/ALCYE-CAR-TRAILER.mp4'
+                'trailer.mp4',
+                'alcye-car-trailer.mp4',
+                'alcye_car_trailer.mp4',
+                'ALCYE-CAR-TRAILER.mp4'
             ];
             let vi = 0;
             const tryVideo = () => {
@@ -2263,7 +2261,7 @@
                     name: gtPartsCatalog[currentGtVehicle].vehicleName
                 }
             };
-            const dashboardUrl = new URL('pages/garagem-virtual.html', window.location.href);
+            const dashboardUrl = new URL('garagem_virtual.html', window.location.href);
             dashboardUrl.hash = `cfg=${btoa(unescape(encodeURIComponent(JSON.stringify(config))))}`;
             window.location.assign(dashboardUrl.href);
         }
